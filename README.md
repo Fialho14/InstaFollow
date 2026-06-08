@@ -4,6 +4,8 @@ InstaFollow e um site para descobrir quem tu segues no Instagram e nao te segue 
 
 Site: [https://fialho14.github.io/InstaFollow/](https://fialho14.github.io/InstaFollow/)
 
+![InstaFollow screenshot](image/README/image.png)
+
 Tudo corre no teu browser. Nao ha login, token, API, backend, extensoes nem envio dos teus ficheiros para servidores.
 
 ## Funcionalidades
