@@ -397,6 +397,7 @@ def build_html(
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 4px;
       white-space: nowrap;
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -617,20 +618,22 @@ def build_html(
     :root {{
       color-scheme: light;
       --bg: #f5f5f7;
-      --bg-elevated: rgba(255, 255, 255, 0.78);
-      --panel: rgba(255, 255, 255, 0.92);
+      --bg-elevated: rgba(255, 255, 255, 0.82);
+      --panel: rgba(255, 255, 255, 0.82);
       --panel-solid: #ffffff;
+      --surface-control: rgba(118, 118, 128, 0.12);
       --text: #1d1d1f;
       --muted: #6e6e73;
       --soft: #86868b;
       --border: rgba(0, 0, 0, 0.1);
       --border-strong: rgba(0, 0, 0, 0.16);
       --accent: #0071e3;
-      --accent-strong: #0057b8;
-      --done: #1d8f5f;
-      --warning: #bf6a02;
-      --shadow: 0 18px 55px rgba(0, 0, 0, 0.09);
-      --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.06);
+      --accent-strong: #005bbd;
+      --done: #248a3d;
+      --warning: #bf5b00;
+      --shadow: 0 22px 70px rgba(0, 0, 0, 0.1);
+      --shadow-soft: 0 8px 28px rgba(0, 0, 0, 0.06);
+      --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0.72);
       --radius: 8px;
       --progress: {initial_progress}%;
     }}
@@ -641,7 +644,7 @@ def build_html(
 
     body {{
       background:
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 260px),
+        linear-gradient(180deg, #ffffff 0%, #fbfbfd 44%, var(--bg) 340px),
         var(--bg);
       color: var(--text);
       text-rendering: optimizeLegibility;
@@ -649,19 +652,20 @@ def build_html(
     }}
 
     main {{
-      width: min(1180px, calc(100% - 32px));
-      padding: 22px 0 54px;
+      width: min(1220px, calc(100% - 36px));
+      padding: 24px 0 56px;
     }}
 
     header {{
-      gap: 22px;
+      gap: 26px;
       margin-bottom: 0;
-      padding: 18px 0 12px;
+      padding: 18px 0 16px;
     }}
 
     h1 {{
-      max-width: 780px;
-      font-size: clamp(2.45rem, 6vw, 5.4rem);
+      max-width: 820px;
+      font-size: clamp(2.7rem, 6.5vw, 5.8rem);
+      font-weight: 800;
       line-height: 0.94;
     }}
 
@@ -679,7 +683,7 @@ def build_html(
     }}
 
     :focus-visible {{
-      outline: 3px solid rgba(0, 113, 227, 0.32);
+      outline: 3px solid rgba(0, 113, 227, 0.3);
       outline-offset: 3px;
     }}
 
@@ -690,7 +694,7 @@ def build_html(
       gap: 14px;
       color: var(--muted);
       font-size: 0.88rem;
-      font-weight: 700;
+      font-weight: 650;
     }}
 
     .brand {{
@@ -707,8 +711,10 @@ def build_html(
       place-items: center;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: var(--panel-solid);
-      box-shadow: var(--shadow-soft);
+      background: var(--panel);
+      box-shadow: var(--shadow-control), var(--shadow-soft);
+      backdrop-filter: blur(24px) saturate(1.35);
+      -webkit-backdrop-filter: blur(24px) saturate(1.35);
     }}
 
     .brand-mark svg,
@@ -729,13 +735,20 @@ def build_html(
     }}
 
     .generated {{
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 0 8px;
+      background: transparent;
       white-space: nowrap;
     }}
 
     .hero-grid {{
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-      gap: 24px;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
+      gap: 30px;
       align-items: stretch;
     }}
 
@@ -743,23 +756,23 @@ def build_html(
       min-width: 0;
       display: grid;
       align-content: end;
-      gap: 18px;
+      gap: 20px;
       padding: 22px 0;
     }}
 
     .eyebrow {{
       margin: 0;
       color: var(--accent);
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }}
 
     .subtitle {{
-      max-width: 680px;
+      max-width: 700px;
       color: var(--muted);
-      font-size: clamp(1.02rem, 2vw, 1.24rem);
+      font-size: clamp(1.05rem, 2vw, 1.26rem);
       line-height: 1.45;
     }}
 
@@ -773,14 +786,13 @@ def build_html(
       display: inline-flex;
       align-items: center;
       min-height: 32px;
-      border: 1px solid var(--border);
+      border: 1px solid transparent;
       border-radius: var(--radius);
       padding: 0 11px;
-      background: var(--panel);
+      background: var(--surface-control);
       color: var(--muted);
       font-size: 0.86rem;
       font-weight: 700;
-      backdrop-filter: blur(18px);
     }}
 
     .progress-panel {{
@@ -791,8 +803,9 @@ def build_html(
       border-radius: var(--radius);
       padding: 22px;
       background: var(--bg-elevated);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-control), var(--shadow);
       backdrop-filter: blur(28px) saturate(1.35);
+      -webkit-backdrop-filter: blur(28px) saturate(1.35);
     }}
 
     .progress-ring {{
@@ -829,16 +842,17 @@ def build_html(
     .stats {{
       grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 12px;
-      margin: 8px 0 20px;
+      margin: 10px 0 22px;
     }}
 
     .stat {{
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 15px 16px;
       background: var(--panel);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-control), var(--shadow-soft);
       backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
     }}
 
     .stat strong {{
@@ -875,8 +889,9 @@ def build_html(
       gap: 10px;
       align-items: end;
       padding: 14px 0;
-      background: rgba(245, 245, 247, 0.84);
+      background: rgba(245, 245, 247, 0.8);
       backdrop-filter: blur(24px) saturate(1.3);
+      -webkit-backdrop-filter: blur(24px) saturate(1.3);
     }}
 
     label {{
@@ -886,7 +901,7 @@ def build_html(
       gap: 7px;
       color: var(--muted);
       font-size: 0.78rem;
-      font-weight: 800;
+      font-weight: 760;
       letter-spacing: 0.03em;
       text-transform: uppercase;
     }}
@@ -898,7 +913,7 @@ def build_html(
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--panel-solid);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-control), var(--shadow-soft);
     }}
 
     .input-shell {{
@@ -947,7 +962,7 @@ def build_html(
     .input-shell:focus-within,
     select:focus {{
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.16);
+      box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.16), var(--shadow-control);
     }}
 
     .filter-bar {{
@@ -966,9 +981,10 @@ def build_html(
       padding: 4px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      background: rgba(232, 232, 237, 0.82);
+      background: var(--surface-control);
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }}
 
     .view-tab {{
@@ -982,8 +998,9 @@ def build_html(
       padding: 0 10px;
       background: transparent;
       color: var(--muted);
-      font-weight: 850;
+      font-weight: 760;
       cursor: pointer;
+      transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
     }}
 
     .view-tab strong {{
@@ -1018,8 +1035,8 @@ def build_html(
       padding: 0 14px;
       background: var(--panel-solid);
       color: var(--muted);
-      font-weight: 800;
-      box-shadow: var(--shadow-soft);
+      font-weight: 760;
+      box-shadow: var(--shadow-control), var(--shadow-soft);
     }}
 
     .list-header {{
@@ -1029,7 +1046,7 @@ def build_html(
       gap: 14px;
       color: var(--muted);
       font-size: 0.9rem;
-      font-weight: 750;
+      font-weight: 700;
     }}
 
     .list-header span {{
@@ -1049,14 +1066,16 @@ def build_html(
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-control), var(--shadow-soft);
       backdrop-filter: blur(18px);
-      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, opacity 160ms ease;
+      -webkit-backdrop-filter: blur(18px);
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
     }}
 
     .user-card:hover {{
       border-color: var(--border-strong);
       transform: translateY(-1px);
+      box-shadow: var(--shadow-control), 0 14px 34px rgba(0, 0, 0, 0.08);
     }}
 
     .user-card[hidden] {{
@@ -1065,7 +1084,7 @@ def build_html(
 
     .user-card.done,
     .user-card.unavailable {{
-      background: rgba(248, 248, 250, 0.84);
+      background: rgba(248, 248, 250, 0.78);
       opacity: 0.78;
     }}
 
@@ -1140,7 +1159,7 @@ def build_html(
       overflow-wrap: anywhere;
       color: var(--text);
       font-size: 1.04rem;
-      font-weight: 850;
+      font-weight: 760;
       text-decoration: none;
     }}
 
@@ -1159,7 +1178,7 @@ def build_html(
     .meta-row {{
       color: var(--muted);
       font-size: 0.88rem;
-      font-weight: 650;
+      font-weight: 600;
     }}
 
     .meta-dot {{
@@ -1181,16 +1200,16 @@ def build_html(
       background: rgba(0, 113, 227, 0.1);
       color: var(--accent);
       font-size: 0.76rem;
-      font-weight: 900;
+      font-weight: 760;
     }}
 
     .user-card.done .user-main .status-pill {{
-      background: rgba(29, 143, 95, 0.12);
+      background: rgba(36, 138, 61, 0.12);
       color: var(--done);
     }}
 
     .user-card.unavailable .user-main .status-pill {{
-      background: rgba(191, 106, 2, 0.12);
+      background: rgba(191, 91, 0, 0.12);
       color: var(--warning);
     }}
 
@@ -1211,7 +1230,7 @@ def build_html(
       padding: 0 12px;
       background: var(--panel-solid);
       color: var(--muted);
-      font-weight: 850;
+      font-weight: 760;
       text-decoration: none;
       cursor: pointer;
       white-space: nowrap;
@@ -1245,10 +1264,11 @@ def build_html(
     .icon-button.ghost:focus {{
       border-color: var(--accent);
       color: var(--accent);
+      background: rgba(0, 113, 227, 0.08);
     }}
 
     .user-card.unavailable .unavailable-button {{
-      border-color: rgba(191, 106, 2, 0.3);
+      border-color: rgba(191, 91, 0, 0.3);
       background: rgba(255, 248, 230, 0.9);
       color: var(--warning);
     }}
@@ -1260,6 +1280,7 @@ def build_html(
       background: var(--panel);
       color: var(--muted);
       font-weight: 750;
+      box-shadow: var(--shadow-control);
     }}
 
     .footnote {{
@@ -1273,9 +1294,10 @@ def build_html(
       :root {{
         color-scheme: dark;
         --bg: #101012;
-        --bg-elevated: rgba(38, 38, 41, 0.72);
+        --bg-elevated: rgba(38, 38, 41, 0.82);
         --panel: rgba(30, 30, 32, 0.82);
         --panel-solid: #1f1f22;
+        --surface-control: rgba(118, 118, 128, 0.24);
         --text: #f5f5f7;
         --muted: #a1a1a6;
         --soft: #77777d;
@@ -1287,11 +1309,12 @@ def build_html(
         --warning: #fdb022;
         --shadow: 0 18px 55px rgba(0, 0, 0, 0.38);
         --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.26);
+        --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0.08);
       }}
 
       body {{
         background:
-          linear-gradient(180deg, #1c1c1e 0%, var(--bg) 290px),
+          linear-gradient(180deg, #1c1c1e 0%, var(--bg) 300px),
           var(--bg);
       }}
 
@@ -1300,7 +1323,7 @@ def build_html(
       }}
 
       .view-tabs {{
-        background: rgba(45, 45, 48, 0.86);
+        background: var(--surface-control);
       }}
 
       .progress-ring {{
@@ -1312,6 +1335,11 @@ def build_html(
       .user-card.done,
       .user-card.unavailable {{
         background: rgba(33, 33, 36, 0.84);
+      }}
+
+      .icon-button.ghost:hover,
+      .icon-button.ghost:focus {{
+        background: rgba(41, 151, 255, 0.12);
       }}
     }}
 
@@ -1346,7 +1374,7 @@ def build_html(
 
     @media (max-width: 720px) {{
       main {{
-        width: min(100% - 22px, 1180px);
+        width: min(100% - 22px, 1220px);
         padding-top: 12px;
       }}
 
@@ -1357,6 +1385,10 @@ def build_html(
 
       .hero-copy {{
         padding: 8px 0;
+      }}
+
+      h1 {{
+        font-size: clamp(2.45rem, 15vw, 4.5rem);
       }}
 
       .progress-panel {{
@@ -1377,8 +1409,13 @@ def build_html(
       }}
 
       .view-tabs {{
-        overflow-x: auto;
-        grid-template-columns: repeat(4, minmax(116px, 1fr));
+        overflow: visible;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-height: auto;
+      }}
+
+      .view-tab {{
+        min-height: 42px;
       }}
 
       .user-card {{
@@ -1404,6 +1441,15 @@ def build_html(
     @media (max-width: 430px) {{
       .stats {{
         grid-template-columns: 1fr;
+      }}
+
+      .progress-ring {{
+        margin: 0 auto;
+      }}
+
+      .progress-panel .subtitle {{
+        max-width: none;
+        text-align: center;
       }}
 
       .user-card {{
