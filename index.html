@@ -94,6 +94,26 @@
       letter-spacing: 0;
     }
 
+    .crossed-title {
+      position: relative;
+      display: inline-block;
+      isolation: isolate;
+    }
+
+    .crossed-title::after {
+      position: absolute;
+      left: -0.06em;
+      right: -0.06em;
+      top: 52%;
+      z-index: 1;
+      height: 0.08em;
+      border-radius: 999px;
+      background: var(--danger);
+      content: "";
+      transform: rotate(-11deg);
+      transform-origin: center;
+    }
+
     .topbar {
       display: flex;
       align-items: center;
@@ -406,6 +426,204 @@
       text-align: center;
       text-transform: uppercase;
       letter-spacing: 0.08em;
+    }
+
+    .export-guide {
+      margin: 0 0 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-control), var(--shadow-soft);
+      backdrop-filter: blur(24px) saturate(1.35);
+      -webkit-backdrop-filter: blur(24px) saturate(1.35);
+    }
+
+    .export-guide[open] {
+      box-shadow: var(--shadow-control), var(--shadow);
+    }
+
+    .guide-summary {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      min-height: 54px;
+      padding: 11px 14px;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .guide-summary::marker {
+      content: "";
+    }
+
+    .guide-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .guide-summary-title {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .guide-summary-title strong {
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .guide-summary-title span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    .guide-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 0 12px;
+      background: rgba(0, 113, 227, 0.08);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .guide-toggle::after {
+      width: 7px;
+      height: 7px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      content: "";
+      transform: translateY(-2px) rotate(45deg);
+      transition: transform 160ms ease;
+    }
+
+    .export-guide[open] .guide-toggle::after {
+      transform: translateY(2px) rotate(225deg);
+    }
+
+    .guide-toggle .when-open,
+    .export-guide[open] .guide-toggle .when-closed {
+      display: none;
+    }
+
+    .export-guide[open] .guide-toggle .when-open {
+      display: inline;
+    }
+
+    .guide-content {
+      display: grid;
+      grid-template-columns: minmax(220px, 0.52fr) minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+      border-top: 1px solid var(--border);
+      padding: 18px;
+    }
+
+    .guide-intro {
+      display: grid;
+      gap: 12px;
+    }
+
+    .guide-intro h2 {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(1.25rem, 2vw, 1.7rem);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .guide-intro p:not(.eyebrow) {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.45;
+    }
+
+    .guide-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .guide-badges span {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface-control);
+      color: var(--text);
+      font-family: inherit;
+      font-weight: 760;
+    }
+
+    .guide-badges span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      font-size: 0.82rem;
+    }
+
+    .guide-steps code {
+      padding: 0;
+      background: transparent;
+      color: var(--text);
+      font-family: inherit;
+      font-weight: 800;
+      line-height: inherit;
+    }
+
+    .guide-steps {
+      list-style: none;
+      counter-reset: export-step;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .guide-steps li {
+      counter-increment: export-step;
+      min-width: 0;
+      display: flex;
+      gap: 10px;
+      align-items: start;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 11px;
+      background: var(--surface-solid);
+      color: var(--text);
+      font-size: 0.92rem;
+      line-height: 1.42;
+      box-shadow: var(--shadow-control);
+    }
+
+    .guide-steps li > span {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .guide-steps li::before {
+      flex: 0 0 auto;
+      width: 30px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(0, 113, 227, 0.1);
+      color: var(--accent);
+      content: counter(export-step, decimal-leading-zero);
+      font-size: 0.72rem;
+      font-weight: 850;
+      line-height: 1;
     }
 
     .stats {
@@ -913,6 +1131,10 @@
         grid-template-columns: 1fr;
       }
 
+      .guide-content {
+        grid-template-columns: 1fr;
+      }
+
       .stats {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -935,6 +1157,19 @@
 
       h1 {
         font-size: clamp(2.45rem, 15vw, 4.5rem);
+      }
+
+      .guide-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .guide-summary {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .guide-toggle {
+        justify-self: start;
       }
 
       .stats {
@@ -1032,7 +1267,7 @@
       <section class="hero-grid" aria-label="Resumo principal">
         <div class="hero-copy">
           <p class="eyebrow">Seguimentos por resolver</p>
-          <h1>Nao me seguem de volta</h1>
+          <h1>Follow <span class="crossed-title">Back</span></h1>
           <p class="subtitle">Abre o export local do Instagram e a comparacao fica pronta no browser.</p>
           <div class="source-strip" id="sourceStrip" aria-label="Ficheiros usados">
             <span class="source-pill">ZIP ou JSON</span>
@@ -1075,6 +1310,48 @@
         </aside>
       </section>
     </header>
+
+    <details class="export-guide">
+      <summary class="guide-summary">
+        <span class="guide-summary-title">
+          <strong>Precisas de ajuda a obter o ZIP do Instagram?</strong>
+          <span>Segue o export recomendado: Followers and Following, All time, JSON.</span>
+        </span>
+        <span class="guide-toggle" aria-hidden="true">
+          <span class="when-closed">Ver passos</span>
+          <span class="when-open">Fechar</span>
+        </span>
+      </summary>
+
+      <div class="guide-content">
+        <div class="guide-intro">
+          <p class="eyebrow">Guia rapido</p>
+          <h2>Como obter os dados do Instagram</h2>
+          <p>O ficheiro ideal e um ZIP em JSON com apenas seguidores e pessoas que segues.</p>
+          <div class="guide-badges" aria-label="Opcoes recomendadas">
+            <span>Followers and Following</span>
+            <span>All time</span>
+            <span>JSON</span>
+            <span>.zip</span>
+          </div>
+        </div>
+
+        <ol class="guide-steps">
+          <li><span>Abre o Instagram</span></li>
+          <li><span>Vai a <code>Settings</code></span></li>
+          <li><span>Entra em <code>Accounts Centre</code></span></li>
+          <li><span>Entra em <code>Your information and permissions</code></span></li>
+          <li><span>Escolhe <code>Export your information</code></span></li>
+          <li><span>Escolhe <code>Create export</code></span></li>
+          <li><span>Seleciona a tua conta</span></li>
+          <li><span>Seleciona <code>Export to device</code></span></li>
+          <li><span>Em <code>Customise information</code>, deixa so <code>Followers and Following</code></span></li>
+          <li><span>Em <code>Date range</code>, escolhe <code>All time</code></span></li>
+          <li><span>Escolhe o formato <code>JSON</code></span></li>
+          <li><span>Descarrega o ficheiro <code>.zip</code></span></li>
+        </ol>
+      </div>
+    </details>
 
     <section class="stats" aria-label="Resumo">
       <div class="stat">
