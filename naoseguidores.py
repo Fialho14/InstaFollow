@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# COMO USAR ESTE PROGRAMA (no terminal):
+# FERRAMENTA AUXILIAR OPCIONAL (no terminal):
 #
 # 1. Faz download dos teus dados do Instagram:
 #       Instagram > Settings > Your information and permissions
@@ -17,7 +17,7 @@
 #       python3 Insta/naoseguidores.py
 #
 # 6. Abre o ficheiro gerado:
-#       Insta/nao_me_seguem.html
+#       Insta/nao_me_seguem_gerado.html
 # ------------------------------------------------------------
 
 from __future__ import annotations
@@ -32,10 +32,10 @@ from urllib.parse import unquote, urlparse
 
 
 # === CAMINHO PARA A PASTA followers_and_following ===
-DATA_PATH = Path("/Users/pedrofialho/Desktop/cenas/Cenas/Insta/Instagram_data_2/followers_and_following")
+DATA_PATH = Path("/Users/pedrofialho/Desktop/connections/followers_and_following")
 # ====================================================
 
-OUTPUT_HTML = Path(__file__).with_name("nao_me_seguem.html")
+OUTPUT_HTML = Path(__file__).with_name("nao_me_seguem_gerado.html")
 DELETED_USERNAME_PREFIX = "__deleted__"
 
 

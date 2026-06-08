@@ -1,30 +1,27 @@
 # InstaFollow
 
-InstaFollow e uma ferramenta local para descobrir quem tu segues no Instagram e nao te segue de volta. O script le os ficheiros JSON exportados pelo Instagram e gera uma pagina HTML bonita, pesquisavel e facil de usar no browser.
+InstaFollow e uma app local para descobrir quem tu segues no Instagram e nao te segue de volta. Abres `nao_me_seguem.html` no browser, carregas o export do Instagram e recebes a lista no momento.
 
-Tudo corre no teu computador. Nao precisas de login, token, API nem extensoes.
+Tudo corre no teu computador. Nao ha login, token, API, backend, extensoes nem envio dos teus ficheiros para servidores.
 
 ## Funcionalidades
 
+- Aceita o `.zip` completo do export do Instagram.
+- Aceita tambem JSON solto, desde que seleciones `following.json` e `followers_*.json` juntos.
 - Compara `following.json` com `followers_*.json`.
-- Remove automaticamente entradas apagadas que aparecem como `__deleted__...`.
-- Gera `nao_me_seguem.html` com uma interface estilo Apple.
+- Remove automaticamente entradas apagadas como `__deleted__...`.
 - Permite pesquisar usernames.
-- Permite filtrar por:
-  - pendentes
-  - todos
-  - retirados
-  - indisponiveis
+- Permite filtrar por pendentes, todos, retirados e indisponiveis.
 - Permite ordenar por A-Z, mais recentes ou mais antigos.
-- Guarda no Safari/Chrome os perfis que ja marcaste como retirados ou indisponiveis.
-- Funciona offline depois de gerada a pagina.
+- Guarda no browser apenas os estados que marcares como retirado ou indisponivel.
+- Funciona offline depois de teres os ficheiros locais do projeto.
 
 ## Requisitos
 
-- Python 3.10 ou mais recente.
+- Um browser moderno, como Safari ou Chrome.
 - Os teus dados do Instagram em formato JSON.
 
-Nao ha dependencias externas. O script usa apenas bibliotecas standard do Python.
+Nao precisas de correr Python para usar a app principal.
 
 ## Como obter os dados do Instagram
 
@@ -35,14 +32,14 @@ Nao ha dependencias externas. O script usa apenas bibliotecas standard do Python
 5. Seleciona apenas `Followers and Following`.
 6. Escolhe o formato `JSON`.
 7. Faz download do ficheiro `.zip`.
-8. Extrai o `.zip`.
-9. Procura a pasta:
+
+O ZIP deve conter uma pasta parecida com:
 
 ```text
 connections/followers_and_following/
 ```
 
-Essa pasta deve conter ficheiros como:
+Essa pasta costuma incluir:
 
 ```text
 followers_1.json
@@ -50,29 +47,15 @@ following.json
 following_hashtags.json
 ```
 
-O script usa apenas `following.json` e `followers_*.json`.
+A app usa apenas `following.json` e `followers_*.json`.
 
 ## Como usar
 
-Dentro da pasta do projeto, corre:
-
-```bash
-python3 naoseguidores.py --path "/caminho/para/followers_and_following"
-```
-
-Exemplo:
-
-```bash
-python3 naoseguidores.py --path "/Users/teu_nome/Downloads/instagram_data/connections/followers_and_following"
-```
-
-No fim, o script cria ou atualiza este ficheiro:
+Abre este ficheiro no Safari, Chrome ou outro browser:
 
 ```text
 nao_me_seguem.html
 ```
-
-Abre esse ficheiro no Safari, Chrome ou outro browser.
 
 No macOS tambem podes abrir pelo terminal:
 
@@ -80,15 +63,48 @@ No macOS tambem podes abrir pelo terminal:
 open nao_me_seguem.html
 ```
 
-## Como usar a pagina
+Depois carrega um destes formatos:
 
-- Usa a pesquisa para encontrar um username.
-- Clica em `Abrir` para abrir o perfil no Instagram.
-- Marca a checkbox quando ja deixaste de seguir essa conta.
-- Clica em `Erro` quando o perfil abrir numa pagina de erro ou estiver indisponivel.
-- Usa os filtros para veres so o que ainda falta.
+- O `.zip` completo exportado pelo Instagram.
+- Ou os JSON soltos `following.json` e `followers_*.json`, selecionados ao mesmo tempo.
 
-As marcacoes ficam guardadas no browser atraves de `localStorage`. Se limpares os dados do browser, essas marcacoes podem desaparecer.
+O resultado aparece na propria pagina. O dataset carregado fica so em memoria enquanto a pagina esta aberta.
+
+## Estados guardados
+
+Podes marcar perfis como:
+
+- `Retirado`
+- `Indisponivel`
+
+Essas marcacoes ficam em `localStorage`, por username. A app nao guarda o export, a lista completa, nem os ficheiros JSON. Se limpares os dados do browser, as marcacoes podem desaparecer.
+
+## ZIP offline
+
+O suporte a ZIP usa uma dependencia local vendorizada:
+
+```text
+vendor/fflate.min.js
+vendor/fflate.LICENSE.txt
+```
+
+Nao ha CDN externa. Mantem a pasta `vendor/` ao lado de `nao_me_seguem.html`.
+
+## Ferramenta Python opcional
+
+O ficheiro `naoseguidores.py` continua disponivel para comparar no terminal. Por defeito, ele gera:
+
+```text
+nao_me_seguem_gerado.html
+```
+
+Exemplo:
+
+```bash
+python3 naoseguidores.py --path "/caminho/para/followers_and_following"
+```
+
+Este fluxo e auxiliar. A app principal e o HTML estatico com upload local.
 
 ## Privacidade
 
@@ -100,24 +116,11 @@ connections/
 followers_and_following/
 ```
 
-O ficheiro `nao_me_seguem.html` tambem contem a lista de usernames gerada. Se o repositorio for publico, confirma antes de o publicar.
+Tambem confirma antes de publicar ficheiros gerados pelo Python, porque podem conter usernames inline.
 
 ## Notas importantes
 
-- O script nao deixa de seguir ninguem automaticamente.
-- O script nao consegue garantir online se um perfil existe, porque o Instagram pode mostrar paginas diferentes dependendo da tua sessao, privacidade, bloqueios ou contas desativadas.
-- Perfis claramente apagados no export do Instagram, como `__deleted__...`, sao removidos automaticamente.
-
-## Problemas comuns
-
-### `following.json` nao encontrado
-
-Confirma que passaste o caminho correto para a pasta `followers_and_following`, nao para a pasta principal do download.
-
-### A lista parece errada
-
-Faz um novo download dos dados do Instagram. O export pode estar desatualizado se seguiste ou deixaste de seguir pessoas depois de o criares.
-
-### As marcacoes desapareceram
-
-As marcacoes ficam guardadas no browser. Podem desaparecer se limpares historico/dados do site ou se abrires a pagina noutro browser.
+- A app nao deixa de seguir ninguem automaticamente.
+- A app nao confirma online se um perfil existe.
+- O Instagram pode mostrar paginas diferentes dependendo da tua sessao, privacidade, bloqueios ou contas desativadas.
+- Se a lista parecer errada, faz um novo download dos dados do Instagram. O export pode estar desatualizado.
