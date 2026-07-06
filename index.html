@@ -1,1331 +1,125 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt" data-theme="auto">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nao me seguem de volta</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #f5f5f7;
-      --surface: rgba(255, 255, 255, 0.82);
-      --surface-solid: #ffffff;
-      --surface-soft: rgba(232, 232, 237, 0.58);
-      --surface-control: rgba(118, 118, 128, 0.12);
-      --text: #1d1d1f;
-      --muted: #6e6e73;
-      --soft: #86868b;
-      --border: rgba(0, 0, 0, 0.1);
-      --border-strong: rgba(0, 0, 0, 0.18);
-      --accent: #0071e3;
-      --accent-strong: #005bbd;
-      --done: #248a3d;
-      --warning: #bf5b00;
-      --danger: #d70015;
-      --shadow: 0 22px 70px rgba(0, 0, 0, 0.1);
-      --shadow-soft: 0 8px 28px rgba(0, 0, 0, 0.06);
-      --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-      --radius: 8px;
-      --progress: 0%;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      background: var(--bg);
-    }
-
-    body {
-      margin: 0;
-      background:
-        linear-gradient(180deg, #ffffff 0%, #fbfbfd 44%, var(--bg) 340px),
-        var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    main {
-      width: min(1220px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 24px 0 56px;
-    }
-
-    button,
-    input,
-    select {
-      font: inherit;
-    }
-
-    button,
-    a,
-    input,
-    select {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button:disabled,
-    input:disabled,
-    select:disabled {
-      cursor: not-allowed;
-      opacity: 0.55;
-    }
-
-    :focus-visible {
-      outline: 3px solid rgba(0, 113, 227, 0.3);
-      outline-offset: 3px;
-    }
-
-    header {
-      display: grid;
-      gap: 26px;
-      padding: 18px 0 16px;
-    }
-
-    h1 {
-      max-width: 820px;
-      margin: 0;
-      font-size: clamp(2.7rem, 6.5vw, 5.8rem);
-      font-weight: 800;
-      line-height: 0.94;
-      letter-spacing: 0;
-    }
-
-    .crossed-title {
-      position: relative;
-      display: inline-block;
-      isolation: isolate;
-    }
-
-    .crossed-title::after {
-      position: absolute;
-      left: -0.06em;
-      right: -0.06em;
-      top: 52%;
-      z-index: 1;
-      height: 0.08em;
-      border-radius: 999px;
-      background: var(--danger);
-      content: "";
-      transform: rotate(-11deg);
-      transform-origin: center;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-weight: 650;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      box-shadow: var(--shadow-control), var(--shadow-soft);
-      backdrop-filter: blur(24px) saturate(1.35);
-      -webkit-backdrop-filter: blur(24px) saturate(1.35);
-    }
-
-    .brand-mark svg,
-    .input-shell svg,
-    .checkmark svg,
-    .icon-button svg,
-    .upload-glyph svg,
-    .upload-button svg,
-    .support-button svg {
-      fill: none;
-      stroke: currentColor;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .brand-mark svg {
-      width: 18px;
-      height: 18px;
-      stroke-width: 1.8;
-      color: var(--text);
-    }
-
-    .topbar-actions {
-      min-width: 0;
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 8px;
-    }
-
-    .support-button {
-      min-height: 30px;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0 10px;
-      background: var(--surface-control);
-      color: var(--text);
-      text-decoration: none;
-      white-space: nowrap;
-      box-shadow: var(--shadow-control);
-      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
-    }
-
-    .support-button:hover,
-    .support-button:focus {
-      transform: translateY(-1px);
-      border-color: rgba(0, 113, 227, 0.28);
-      background: rgba(0, 113, 227, 0.1);
-    }
-
-    .support-button svg {
-      width: 16px;
-      height: 16px;
-      flex: 0 0 auto;
-      color: var(--accent);
-      stroke-width: 1.9;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
-      gap: 30px;
-      align-items: stretch;
-    }
-
-    .hero-copy {
-      min-width: 0;
-      display: grid;
-      align-content: end;
-      gap: 20px;
-      padding: 22px 0;
-    }
-
-    .eyebrow {
-      margin: 0;
-      color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .subtitle {
-      max-width: 700px;
-      margin: 0;
-      color: var(--muted);
-      font-size: clamp(1.05rem, 2vw, 1.26rem);
-      line-height: 1.45;
-    }
-
-    .source-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .source-pill {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      border: 1px solid transparent;
-      border-radius: var(--radius);
-      padding: 0 11px;
-      background: var(--surface-control);
-      color: var(--muted);
-      font-size: 0.86rem;
-      font-weight: 700;
-    }
-
-    .upload-panel {
-      display: grid;
-      gap: 14px;
-      align-content: center;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      background: var(--surface);
-      box-shadow: var(--shadow-control), var(--shadow);
-      backdrop-filter: blur(30px) saturate(1.35);
-      -webkit-backdrop-filter: blur(30px) saturate(1.35);
-    }
-
-    .upload-zone {
-      position: relative;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-      gap: 12px;
-      min-height: 212px;
-      border: 1.5px dashed rgba(0, 113, 227, 0.28);
-      border-radius: var(--radius);
-      padding: 24px;
-      background: var(--surface-soft);
-      text-align: center;
-      box-shadow: var(--shadow-control);
-      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
-    }
-
-    .upload-zone::after {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      content: "";
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0));
-    }
-
-    .upload-zone > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    .upload-zone:hover {
-      transform: translateY(-1px);
-      border-color: rgba(0, 113, 227, 0.44);
-    }
-
-    .upload-zone.dragging {
-      border-color: var(--accent);
-      background: rgba(0, 113, 227, 0.09);
-    }
-
-    .upload-glyph {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(0, 113, 227, 0.16);
-      border-radius: 50%;
-      background: rgba(0, 113, 227, 0.08);
-      color: var(--accent);
-      box-shadow: var(--shadow-control);
-    }
-
-    .upload-glyph svg {
-      width: 25px;
-      height: 25px;
-      stroke-width: 1.9;
-    }
-
-    .upload-title {
-      margin: 0;
-      color: var(--text);
-      font-size: 1.08rem;
-      font-weight: 760;
-    }
-
-    .upload-note,
-    .upload-status {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.45;
-    }
-
-    .upload-note {
-      max-width: 300px;
-    }
-
-    .upload-status {
-      min-height: 20px;
-      font-weight: 700;
-    }
-
-    .upload-status.success {
-      color: var(--done);
-    }
-
-    .upload-status.error {
-      color: var(--danger);
-    }
-
-    .upload-button,
-    .icon-button {
-      min-height: 42px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0 13px;
-      background: var(--surface-solid);
-      color: var(--muted);
-      font-weight: 760;
-      text-decoration: none;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease, color 150ms ease;
-    }
-
-    .upload-button.primary,
-    .icon-button.primary {
-      border-color: var(--accent);
-      background: var(--accent);
-      color: #ffffff;
-      box-shadow: 0 10px 22px rgba(0, 113, 227, 0.24);
-    }
-
-    .upload-button:hover,
-    .icon-button:hover {
-      transform: translateY(-1px);
-    }
-
-    .upload-button.primary:hover,
-    .upload-button.primary:focus,
-    .icon-button.primary:hover,
-    .icon-button.primary:focus {
-      border-color: var(--accent-strong);
-      background: var(--accent-strong);
-    }
-
-    .upload-button svg,
-    .icon-button svg {
-      width: 17px;
-      height: 17px;
-      stroke-width: 2;
-    }
-
-    .file-input {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
-    }
-
-    .progress-panel {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 16px;
-      align-items: center;
-      border-top: 1px solid var(--border);
-      padding-top: 14px;
-    }
-
-    .progress-panel .subtitle {
-      max-width: 240px;
-      font-size: 0.98rem;
-      line-height: 1.4;
-    }
-
-    .progress-ring {
-      width: 78px;
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at center, var(--surface-solid) 0 58%, transparent 59%),
-        conic-gradient(var(--accent) var(--progress), rgba(0, 0, 0, 0.08) 0);
-      box-shadow: inset 0 0 0 1px var(--border);
-    }
-
-    .progress-ring strong {
-      display: block;
-      font-size: 1.34rem;
-      line-height: 1;
-      text-align: center;
-    }
-
-    .progress-ring span {
-      display: block;
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 0.64rem;
-      font-weight: 800;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .export-guide {
-      margin: 0 0 22px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface);
-      box-shadow: var(--shadow-control), var(--shadow-soft);
-      backdrop-filter: blur(24px) saturate(1.35);
-      -webkit-backdrop-filter: blur(24px) saturate(1.35);
-    }
-
-    .export-guide[open] {
-      box-shadow: var(--shadow-control), var(--shadow);
-    }
-
-    .guide-summary {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 16px;
-      align-items: center;
-      min-height: 54px;
-      padding: 11px 14px;
-      cursor: pointer;
-      list-style: none;
-    }
-
-    .guide-summary::marker {
-      content: "";
-    }
-
-    .guide-summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .guide-summary-title {
-      display: grid;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .guide-summary-title strong {
-      color: var(--text);
-      font-size: 1rem;
-      line-height: 1.2;
-    }
-
-    .guide-summary-title span {
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.35;
-    }
-
-    .guide-toggle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      min-height: 36px;
-      border: 1px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 0 12px;
-      background: rgba(0, 113, 227, 0.08);
-      color: var(--accent);
-      font-size: 0.88rem;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .guide-toggle::after {
-      width: 7px;
-      height: 7px;
-      border-right: 2px solid currentColor;
-      border-bottom: 2px solid currentColor;
-      content: "";
-      transform: translateY(-2px) rotate(45deg);
-      transition: transform 160ms ease;
-    }
-
-    .export-guide[open] .guide-toggle::after {
-      transform: translateY(2px) rotate(225deg);
-    }
-
-    .guide-toggle .when-open,
-    .export-guide[open] .guide-toggle .when-closed {
-      display: none;
-    }
-
-    .export-guide[open] .guide-toggle .when-open {
-      display: inline;
-    }
-
-    .guide-content {
-      display: grid;
-      grid-template-columns: minmax(220px, 0.52fr) minmax(0, 1fr);
-      gap: 18px;
-      align-items: start;
-      border-top: 1px solid var(--border);
-      padding: 18px;
-    }
-
-    .guide-intro {
-      display: grid;
-      gap: 12px;
-    }
-
-    .guide-intro h2 {
-      margin: 0;
-      color: var(--text);
-      font-size: clamp(1.25rem, 2vw, 1.7rem);
-      line-height: 1.12;
-      letter-spacing: 0;
-    }
-
-    .guide-intro p:not(.eyebrow) {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.96rem;
-      line-height: 1.45;
-    }
-
-    .guide-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 2px;
-    }
-
-    .guide-badges span {
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      background: var(--surface-control);
-      color: var(--text);
-      font-family: inherit;
-      font-weight: 760;
-    }
-
-    .guide-badges span {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      padding: 0 10px;
-      font-size: 0.82rem;
-    }
-
-    .guide-steps code {
-      padding: 0;
-      background: transparent;
-      color: var(--text);
-      font-family: inherit;
-      font-weight: 800;
-      line-height: inherit;
-    }
-
-    .guide-steps {
-      list-style: none;
-      counter-reset: export-step;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .guide-steps li {
-      counter-increment: export-step;
-      min-width: 0;
-      display: flex;
-      gap: 10px;
-      align-items: start;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 11px;
-      background: var(--surface-solid);
-      color: var(--text);
-      font-size: 0.92rem;
-      line-height: 1.42;
-      box-shadow: var(--shadow-control);
-    }
-
-    .guide-steps li > span {
-      min-width: 0;
-      flex: 1;
-    }
-
-    .guide-steps li::before {
-      flex: 0 0 auto;
-      width: 30px;
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: rgba(0, 113, 227, 0.1);
-      color: var(--accent);
-      content: counter(export-step, decimal-leading-zero);
-      font-size: 0.72rem;
-      font-weight: 850;
-      line-height: 1;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 12px;
-      margin: 10px 0 22px;
-    }
-
-    .stat {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 15px 16px;
-      background: var(--surface);
-      box-shadow: var(--shadow-control), var(--shadow-soft);
-      backdrop-filter: blur(24px) saturate(1.35);
-      -webkit-backdrop-filter: blur(24px) saturate(1.35);
-    }
-
-    .stat strong {
-      display: block;
-      font-size: clamp(1.55rem, 3vw, 2.25rem);
-      line-height: 1.1;
-      letter-spacing: 0;
-    }
-
-    .stat span {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-weight: 700;
-    }
-
-    .stat.pending strong {
-      color: var(--accent);
-    }
-
-    .stat.done strong {
-      color: var(--done);
-    }
-
-    .stat.unavailable strong {
-      color: var(--warning);
-    }
-
-    .workbench {
-      display: grid;
-      gap: 14px;
-    }
-
-    .toolbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: grid;
-      grid-template-columns: minmax(240px, 1fr) minmax(150px, 190px);
-      gap: 10px;
-      align-items: end;
-      padding: 14px 0;
-      background: rgba(245, 245, 247, 0.8);
-      backdrop-filter: blur(24px) saturate(1.3);
-      -webkit-backdrop-filter: blur(24px) saturate(1.3);
-    }
-
-    label {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 760;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .input-shell,
-    select {
-      width: 100%;
-      min-height: 48px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface-solid);
-      box-shadow: var(--shadow-control), var(--shadow-soft);
-    }
-
-    .input-shell {
-      display: grid;
-      grid-template-columns: 22px 1fr;
-      gap: 10px;
-      align-items: center;
-      padding: 0 14px;
-    }
-
-    .input-shell svg {
-      width: 18px;
-      height: 18px;
-      stroke-width: 2;
-      color: var(--muted);
-    }
-
-    input {
-      min-width: 0;
-      width: 100%;
-      min-height: auto;
-      border: 0;
-      padding: 0;
-      background: transparent;
-      color: var(--text);
-      font-size: 1rem;
-      outline: none;
-    }
-
-    select {
-      appearance: none;
-      padding: 0 34px 0 13px;
-      color: var(--text);
-      background-image:
-        linear-gradient(45deg, transparent 50%, var(--muted) 50%),
-        linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-      background-position:
-        calc(100% - 18px) 20px,
-        calc(100% - 12px) 20px;
-      background-size: 6px 6px, 6px 6px;
-      background-repeat: no-repeat;
-      font-weight: 750;
-      outline: none;
-    }
-
-    .input-shell:focus-within,
-    select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.16), var(--shadow-control);
-    }
-
-    .filter-bar {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .view-tabs {
-      min-width: 0;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      min-height: 48px;
-      padding: 4px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--surface-control);
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-      backdrop-filter: blur(20px) saturate(1.25);
-      -webkit-backdrop-filter: blur(20px) saturate(1.25);
-    }
-
-    .view-tab {
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 0;
-      border-radius: 7px;
-      padding: 0 10px;
-      background: transparent;
-      color: var(--muted);
-      font-weight: 760;
-      cursor: pointer;
-      transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
-    }
-
-    .view-tab strong {
-      min-width: 24px;
-      min-height: 22px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      padding: 0 7px;
-      background: rgba(0, 0, 0, 0.07);
-      color: inherit;
-      font-size: 0.78rem;
-      line-height: 1;
-    }
-
-    .view-tab.active {
-      background: var(--surface-solid);
-      color: var(--text);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-    }
-
-    .visible-count {
-      align-self: stretch;
-      min-height: 48px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      white-space: nowrap;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 0 14px;
-      background: var(--surface-solid);
-      color: var(--muted);
-      font-weight: 760;
-      box-shadow: var(--shadow-control), var(--shadow-soft);
-    }
-
-    .list-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .list-header span {
-      white-space: nowrap;
-    }
-
-    .user-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 8px;
-    }
-
-    .user-card {
-      display: grid;
-      grid-template-columns: 34px 48px minmax(0, 1fr) auto;
-      gap: 12px;
-      align-items: center;
-      min-height: 78px;
-      padding: 13px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-control), var(--shadow-soft);
-      backdrop-filter: blur(22px) saturate(1.35);
-      -webkit-backdrop-filter: blur(22px) saturate(1.35);
-      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease, opacity 160ms ease, box-shadow 160ms ease;
-    }
-
-    .user-card:hover {
-      border-color: var(--border-strong);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-control), 0 14px 34px rgba(0, 0, 0, 0.08);
-    }
-
-    .user-card[hidden] {
-      display: none;
-    }
-
-    .user-card.done,
-    .user-card.unavailable {
-      background: rgba(248, 248, 250, 0.78);
-      opacity: 0.78;
-    }
-
-    .done-check {
-      position: relative;
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-    }
-
-    .done-check input {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-    }
-
-    .checkmark {
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      border: 1.5px solid var(--border-strong);
-      border-radius: 50%;
-      background: var(--surface-solid);
-      color: transparent;
-      transition: all 160ms ease;
-    }
-
-    .checkmark svg {
-      width: 18px;
-      height: 18px;
-      stroke-width: 2.5;
-    }
-
-    .done-check input:checked + .checkmark {
-      border-color: var(--done);
-      background: var(--done);
-      color: #ffffff;
-    }
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      border: 1px solid hsla(var(--avatar-hue), 62%, 36%, 0.18);
-      border-radius: 50%;
-      background:
-        linear-gradient(180deg, hsla(var(--avatar-hue), 84%, 95%, 1), hsla(var(--avatar-hue), 68%, 88%, 1));
-      color: hsl(var(--avatar-hue), 58%, 30%);
-      font-weight: 800;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
-    }
-
-    .user-main {
-      min-width: 0;
-      display: grid;
-      gap: 6px;
-    }
-
-    .username-row,
-    .meta-row {
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .user-main a {
-      min-width: 0;
-      overflow-wrap: anywhere;
-      color: var(--text);
-      font-size: 1.04rem;
-      font-weight: 760;
-      text-decoration: none;
-    }
-
-    .user-main a:hover,
-    .user-main a:focus {
-      color: var(--accent);
-      text-decoration: underline;
-    }
-
-    .user-card.done .user-main a,
-    .user-card.unavailable .user-main a {
-      color: var(--muted);
-      text-decoration: line-through;
-    }
-
-    .meta-row {
-      color: var(--muted);
-      font-size: 0.88rem;
-      font-weight: 600;
-    }
-
-    .meta-dot {
-      width: 4px;
-      height: 4px;
-      flex: 0 0 auto;
-      border-radius: 50%;
-      background: var(--soft);
-    }
-
-    .user-main .status-pill {
-      flex: 0 0 auto;
-      min-height: 24px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      padding: 0 9px;
-      background: rgba(0, 113, 227, 0.1);
-      color: var(--accent);
-      font-size: 0.76rem;
-      font-weight: 760;
-    }
-
-    .user-card.done .user-main .status-pill {
-      background: rgba(36, 138, 61, 0.12);
-      color: var(--done);
-    }
-
-    .user-card.unavailable .user-main .status-pill {
-      background: rgba(191, 91, 0, 0.12);
-      color: var(--warning);
-    }
-
-    .actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-    }
-
-    .icon-button.ghost:hover,
-    .icon-button.ghost:focus {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(0, 113, 227, 0.08);
-    }
-
-    .user-card.unavailable .unavailable-button {
-      border-color: rgba(191, 91, 0, 0.3);
-      background: rgba(255, 248, 230, 0.9);
-      color: var(--warning);
-    }
-
-    .empty {
-      margin: 0;
-      padding: 28px;
-      border: 1px dashed var(--border-strong);
-      border-radius: var(--radius);
-      background: var(--surface);
-      color: var(--muted);
-      font-weight: 700;
-      text-align: center;
-      box-shadow: var(--shadow-control);
-    }
-
-    .footnote {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.86rem;
-      line-height: 1.45;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        color-scheme: dark;
-        --bg: #101012;
-        --surface: rgba(30, 30, 32, 0.82);
-        --surface-solid: #1f1f22;
-        --surface-soft: rgba(58, 58, 60, 0.55);
-        --surface-control: rgba(118, 118, 128, 0.24);
-        --text: #f4f6f8;
-        --muted: #a1a1a6;
-        --soft: #77777d;
-        --border: rgba(255, 255, 255, 0.12);
-        --border-strong: rgba(255, 255, 255, 0.22);
-        --accent: #2997ff;
-        --accent-strong: #0a84ff;
-        --done: #32d583;
-        --warning: #fdb022;
-        --danger: #ff8a80;
-        --shadow: 0 18px 55px rgba(0, 0, 0, 0.38);
-        --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.26);
-        --shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      }
-
-      body {
-        background:
-          linear-gradient(180deg, #1c1c1e 0%, var(--bg) 300px),
-          var(--bg);
-      }
-
-      .upload-zone::after {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
-      }
-
-      .toolbar {
-        background: rgba(16, 16, 18, 0.82);
-      }
-
-      .view-tabs {
-        background: var(--surface-control);
-      }
-
-      .progress-ring {
-        background:
-          radial-gradient(circle at center, var(--surface-solid) 0 58%, transparent 59%),
-          conic-gradient(var(--accent) var(--progress), rgba(255, 255, 255, 0.14) 0);
-      }
-
-      .upload-zone.dragging {
-        background: rgba(41, 151, 255, 0.12);
-      }
-
-      .user-card.done,
-      .user-card.unavailable {
-        background: rgba(33, 33, 36, 0.84);
-      }
-
-      .icon-button.ghost:hover,
-      .icon-button.ghost:focus {
-        background: rgba(41, 151, 255, 0.12);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        scroll-behavior: auto !important;
-        transition-duration: 0.001ms !important;
-        animation-duration: 0.001ms !important;
-      }
-    }
-
-    @media (max-width: 940px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .guide-content {
-        grid-template-columns: 1fr;
-      }
-
-      .stats {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 720px) {
-      main {
-        width: min(100% - 22px, 1220px);
-        padding-top: 12px;
-      }
-
-      .topbar {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .topbar-actions {
-        justify-content: flex-start;
-      }
-
-      .hero-copy {
-        padding: 8px 0;
-      }
-
-      h1 {
-        font-size: clamp(2.45rem, 15vw, 4.5rem);
-      }
-
-      .guide-steps {
-        grid-template-columns: 1fr;
-      }
-
-      .guide-summary {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .guide-toggle {
-        justify-self: start;
-      }
-
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .toolbar {
-        grid-template-columns: 1fr;
-        padding-top: 10px;
-      }
-
-      .filter-bar {
-        grid-template-columns: 1fr;
-      }
-
-      .view-tabs {
-        overflow: visible;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        min-height: auto;
-      }
-
-      .view-tab {
-        min-height: 42px;
-      }
-
-      .user-card {
-        grid-template-columns: 34px 44px minmax(0, 1fr);
-        align-items: start;
-      }
-
-      .actions {
-        grid-column: 1 / -1;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .icon-button {
-        width: 100%;
-      }
-
-      .meta-row {
-        flex-wrap: wrap;
-      }
-    }
-
-    @media (max-width: 430px) {
-      .topbar-actions,
-      .support-button {
-        width: 100%;
-      }
-
-      .support-button {
-        justify-content: center;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-      .progress-panel {
-        grid-template-columns: 1fr;
-      }
-
-      .progress-ring {
-        margin: 0 auto;
-      }
-
-      .progress-panel .subtitle {
-        max-width: none;
-        text-align: center;
-      }
-
-      .user-card {
-        grid-template-columns: 32px 1fr;
-      }
-
-      .avatar {
-        display: none;
-      }
-
-      .user-main {
-        grid-column: 2;
-      }
-    }
-  </style>
+  <title>InstaFollow — Descobre quem não te segue de volta</title>
+  <meta name="description" content="Arrasta o export ZIP do Instagram e descobre no momento quem não te segue de volta. 100% no teu browser: sem login, sem API, sem envio de dados.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0b10" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://fialho14.github.io/InstaFollow/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="InstaFollow — Descobre quem não te segue de volta">
+  <meta property="og:description" content="Arrasta o export ZIP do Instagram e recebe a lista no momento. Tudo corre localmente no teu browser.">
+  <meta property="og:url" content="https://fialho14.github.io/InstaFollow/">
+  <meta property="og:image" content="https://fialho14.github.io/InstaFollow/image/README/image.png">
+  <meta property="og:locale" content="pt_PT">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f9ce34'/%3E%3Cstop offset='.5' stop-color='%23ee2a7b'/%3E%3Cstop offset='1' stop-color='%236228d7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='4' width='56' height='56' rx='16' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='32' r='12' fill='none' stroke='white' stroke-width='5'/%3E%3Ccircle cx='46' cy='18' r='4' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-  <main>
-    <header>
-      <div class="topbar">
-        <div class="brand">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24" focusable="false">
-              <rect x="4" y="4" width="16" height="16" rx="5"></rect>
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M17.2 6.8h.01"></path>
-            </svg>
-          </span>
-          <span>Instagram follow audit</span>
-        </div>
-        <div class="topbar-actions">
-          <a class="support-button" href="https://buymeacoffee.com/fialho14" target="_blank" rel="noreferrer" aria-label="Apoiar o projeto: Buy Me an Ice Tea">
-            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-              <path d="M6 7.2h8l-.7 8.1a2 2 0 0 1-2 1.8H8.7a2 2 0 0 1-2-1.8L6 7.2Z"></path>
-              <path d="M5.2 7.2h9.6"></path>
-              <path d="M8.2 4.2h3.6"></path>
-              <path d="M10 4.2v3"></path>
-              <path d="M14 8.8h1.1a2 2 0 0 1 0 4H13.7"></path>
-            </svg>
-            <span>Buy Me an Ice Tea</span>
-          </a>
-        </div>
+  <a class="skip-link" href="#analisar">Saltar para a análise</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="shell header-inner">
+      <a class="brand" href="#topo" aria-label="InstaFollow, voltar ao topo">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="5.2"></rect>
+            <circle cx="12" cy="12" r="4.1"></circle>
+            <path d="M17.4 6.6h.01"></path>
+          </svg>
+        </span>
+        <span class="brand-name">InstaFollow</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Navegação principal">
+        <a href="#analisar">Analisar</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#privacidade">Privacidade</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema claro e escuro">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7"></path>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4Z"></path>
+          </svg>
+        </button>
+        <a class="button ghost small" href="https://github.com/Fialho14/InstaFollow" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 2.6a9.4 9.4 0 0 0-3 18.3c.5.1.7-.2.7-.5v-1.7c-2.7.6-3.3-1.1-3.3-1.1-.4-1.1-1-1.4-1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.1-.2-4.4-1.1-4.4-4.7 0-1 .4-1.9 1-2.6-.1-.2-.4-1.2.1-2.5 0 0 .8-.3 2.6 1a9 9 0 0 1 4.8 0c1.8-1.3 2.6-1 2.6-1 .5 1.3.2 2.3.1 2.5.6.7 1 1.6 1 2.6 0 3.6-2.3 4.5-4.4 4.7.3.3.6.9.6 1.8v2.6c0 .3.2.6.7.5A9.4 9.4 0 0 0 12 2.6Z"></path>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a class="button support small" href="https://buymeacoffee.com/fialho14" target="_blank" rel="noreferrer" aria-label="Apoiar o projeto: Buy Me an Ice Tea">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M6 7.2h8l-.7 8.1a2 2 0 0 1-2 1.8H8.7a2 2 0 0 1-2-1.8L6 7.2Z"></path>
+            <path d="M5.2 7.2h9.6"></path>
+            <path d="M8.2 4.2h3.6"></path>
+            <path d="M10 4.2v3"></path>
+            <path d="M14 8.8h1.1a2 2 0 0 1 0 4H13.7"></path>
+          </svg>
+          <span>Ice Tea</span>
+        </a>
       </div>
+    </div>
+  </header>
 
-      <section class="hero-grid" aria-label="Resumo principal">
-        <div class="hero-copy">
-          <p class="eyebrow">Amizades por resolver</p>
-          <h1>Follow <span class="crossed-title">Back</span></h1>
-          <p class="subtitle">Descobre quem nao te segue de volta.</p>
+  <main id="topo">
+    <!-- ============================= HERO ============================= -->
+    <section class="hero" aria-label="Apresentação">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="shell hero-inner">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            Auditoria de seguidores · 100% no teu browser
+          </p>
+          <h1>Descobre quem <span class="gradient-text">não te segue</span> de volta.</h1>
+          <p class="lede">
+            Arrasta o ZIP exportado pelo Instagram e recebe a lista no momento.
+            Sem login, sem tokens, sem servidores — os teus dados nunca saem do teu dispositivo.
+          </p>
+          <div class="hero-cta">
+            <a class="button primary large" href="#analisar">
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                <path d="M10 13.5V3.8"></path>
+                <path d="m5.8 8 4.2-4.2L14.2 8"></path>
+                <path d="M4 14.2v1.6h12v-1.6"></path>
+              </svg>
+              <span>Analisar o meu export</span>
+            </a>
+            <a class="button ghost large" href="#como-funciona">Como funciona</a>
+          </div>
+          <ul class="trust-strip" aria-label="Garantias">
+            <li>
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 2.5 16.5 5v4.6c0 4-2.6 6.7-6.5 8-3.9-1.3-6.5-4-6.5-8V5Z"></path><path d="m7.2 9.8 2 2 3.6-4"></path></svg>
+              Privado por construção
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M13.3 6.7a4.2 4.2 0 0 0-6 0L4 10a4.2 4.2 0 0 0 6 6l.9-1"></path><path d="M6.7 13.3a4.2 4.2 0 0 0 6 0L16 10a4.2 4.2 0 0 0-6-6l-.9 1"></path></svg>
+              Sem login nem API
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m7 4.5-5 5.5 5 5.5"></path><path d="m13 4.5 5 5.5-5 5.5"></path></svg>
+              Código aberto
+            </li>
+            <li>
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 2.6a7.4 7.4 0 1 0 7.4 7.4"></path><path d="M10 5.6V10l3 1.8"></path></svg>
+              Resultado imediato
+            </li>
+          </ul>
         </div>
 
-        <aside class="upload-panel" aria-label="Upload local">
+        <!-- ======================= UPLOAD PANEL ======================= -->
+        <aside class="upload-panel reveal" id="analisar" aria-label="Carregar export do Instagram">
           <div class="upload-zone" id="dropZone">
             <input class="file-input" id="fileInput" type="file" accept=".zip,.json,application/json,application/zip,application/x-zip-compressed" multiple>
             <span class="upload-glyph" aria-hidden="true">
@@ -1335,876 +129,354 @@
                 <path d="M5.2 16.2v2.6h13.6v-2.6"></path>
               </svg>
             </span>
-            <p class="upload-title">Carregar export do Instagram</p>
-            <p class="upload-note">ZIP completo, ou following.json e followers_*.json selecionados juntos.</p>
-            <button class="upload-button primary" id="uploadButton" type="button">
-              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                <path d="M10 13.5V3.8"></path>
-                <path d="m5.8 8 4.2-4.2L14.2 8"></path>
-                <path d="M4 14.2v1.6h12v-1.6"></path>
-              </svg>
-              <span>Escolher ficheiros</span>
-            </button>
+            <p class="upload-title">Arrasta o export para aqui</p>
+            <p class="upload-note">ZIP completo do Instagram, ou <code>following.json</code> e <code>followers_*.json</code> selecionados juntos.</p>
+            <div class="upload-buttons">
+              <button class="button primary" id="uploadButton" type="button">
+                <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M4 13.5v2h12v-2"></path>
+                  <path d="M10 3.5v8.7"></path>
+                  <path d="m6 8.4 4 3.8 4-3.8"></path>
+                </svg>
+                <span>Escolher ficheiros</span>
+              </button>
+              <button class="button ghost" id="demoButton" type="button">Ver demonstração</button>
+            </div>
           </div>
-          <p class="upload-status" id="uploadStatus" aria-live="polite">Nenhum ficheiro carregado.</p>
-          <div class="progress-panel" aria-label="Progresso">
+          <p class="upload-status" id="uploadStatus" aria-live="polite">Nenhum ficheiro carregado. Nada é enviado para servidores.</p>
+          <div class="source-strip" id="sourceStrip" aria-live="polite"></div>
+          <div class="progress-panel" aria-label="Progresso da limpeza">
             <div class="progress-ring" aria-hidden="true">
               <div>
                 <strong id="progressPercent">0%</strong>
-                <span>feito</span>
+                <span>resolvido</span>
               </div>
             </div>
-            <p class="subtitle" id="progressText">Aguardando export local.</p>
+            <p class="progress-text" id="progressText">À espera do teu export local.</p>
           </div>
         </aside>
-      </section>
-    </header>
-
-    <details class="export-guide">
-      <summary class="guide-summary">
-        <span class="guide-summary-title">
-          <strong>Precisas de ajuda a obter o ZIP do Instagram?</strong>
-          <span>Segue o export recomendado: Followers and Following, All time, JSON.</span>
-        </span>
-        <span class="guide-toggle" aria-hidden="true">
-          <span class="when-closed">Ver passos</span>
-          <span class="when-open">Fechar</span>
-        </span>
-      </summary>
-
-      <div class="guide-content">
-        <div class="guide-intro">
-          <p class="eyebrow">Guia rapido</p>
-          <h2>Como obter os dados do Instagram</h2>
-          <p>O ficheiro ideal e um ZIP em JSON com apenas seguidores e pessoas que segues.</p>
-          <div class="guide-badges" aria-label="Opcoes recomendadas">
-            <span>Followers and Following</span>
-            <span>All time</span>
-            <span>JSON</span>
-            <span>.zip</span>
-          </div>
-        </div>
-
-        <ol class="guide-steps">
-          <li><span>Abre o Instagram</span></li>
-          <li><span>Vai a <code>Settings</code></span></li>
-          <li><span>Entra em <code>Accounts Centre</code></span></li>
-          <li><span>Entra em <code>Your information and permissions</code></span></li>
-          <li><span>Escolhe <code>Export your information</code></span></li>
-          <li><span>Escolhe <code>Create export</code></span></li>
-          <li><span>Seleciona a tua conta</span></li>
-          <li><span>Seleciona <code>Export to device</code></span></li>
-          <li><span>Em <code>Customise information</code>, deixa so <code>Followers and Following</code></span></li>
-          <li><span>Em <code>Date range</code>, escolhe <code>All time</code></span></li>
-          <li><span>Escolhe o formato <code>JSON</code></span></li>
-          <li><span>Descarrega o ficheiro <code>.zip</code></span></li>
-        </ol>
-      </div>
-    </details>
-
-    <section class="stats" aria-label="Resumo">
-      <div class="stat">
-        <strong id="followersCount">0</strong>
-        <span>Seguidores</span>
-      </div>
-      <div class="stat">
-        <strong id="followingCount">0</strong>
-        <span>Pessoas que segues</span>
-      </div>
-      <div class="stat">
-        <strong id="resultCount">0</strong>
-        <span>Nao seguem de volta</span>
-      </div>
-      <div class="stat pending">
-        <strong id="pendingCount">0</strong>
-        <span>Pendentes</span>
-      </div>
-      <div class="stat done">
-        <strong id="doneCount">0</strong>
-        <span>Retirados</span>
-      </div>
-      <div class="stat unavailable">
-        <strong id="unavailableCount">0</strong>
-        <span>Indisponiveis</span>
       </div>
     </section>
 
-    <section class="workbench" aria-label="Lista de perfis">
-      <div class="toolbar">
-        <label for="search">
-          Pesquisar
-          <span class="input-shell">
-            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-              <circle cx="9" cy="9" r="5.7"></circle>
-              <path d="m13.2 13.2 3.4 3.4"></path>
-            </svg>
-            <input id="search" type="search" placeholder="username" autocomplete="off" disabled>
-          </span>
-        </label>
+    <!-- ============================ DASHBOARD ============================ -->
+    <section class="dashboard shell" id="resultados" aria-label="Resultados">
+      <div class="section-head reveal">
+        <p class="eyebrow">Resultados</p>
+        <h2>O teu painel de amizades por resolver</h2>
+        <p class="section-lede">Marca perfis como retirados ou indisponíveis. As marcações ficam guardadas apenas no teu browser.</p>
+      </div>
 
-        <label for="sort">
-          Ordenar
-          <select id="sort" disabled>
-            <option value="username">A-Z</option>
-            <option value="recent">Mais recentes</option>
-            <option value="oldest">Mais antigos</option>
-          </select>
-        </label>
-
-        <div class="filter-bar">
-          <div class="view-tabs" role="tablist" aria-label="Filtro de estado">
-            <button class="view-tab active" type="button" role="tab" aria-selected="true" data-filter="pending" disabled>
-              <span>Pendentes</span>
-              <strong id="filterPendingCount">0</strong>
-            </button>
-            <button class="view-tab" type="button" role="tab" aria-selected="false" data-filter="all" disabled>
-              <span>Todos</span>
-              <strong id="filterAllCount">0</strong>
-            </button>
-            <button class="view-tab" type="button" role="tab" aria-selected="false" data-filter="done" disabled>
-              <span>Retirados</span>
-              <strong id="filterDoneCount">0</strong>
-            </button>
-            <button class="view-tab" type="button" role="tab" aria-selected="false" data-filter="unavailable" disabled>
-              <span>Indisponiveis</span>
-              <strong id="filterUnavailableCount">0</strong>
-            </button>
-          </div>
-          <div class="visible-count" aria-live="polite"><span id="visibleCount">0</span> visiveis</div>
+      <div class="stats reveal" aria-label="Resumo dos dados">
+        <div class="stat">
+          <span class="stat-label">Seguidores</span>
+          <strong class="stat-value" id="followersCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">A seguir</span>
+          <strong class="stat-value" id="followingCount">0</strong>
+        </div>
+        <div class="stat highlight">
+          <span class="stat-label">Não seguem de volta</span>
+          <strong class="stat-value" id="resultCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label"><span class="status-dot pending" aria-hidden="true"></span>Pendentes</span>
+          <strong class="stat-value" id="pendingCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label"><span class="status-dot done" aria-hidden="true"></span>Retirados</span>
+          <strong class="stat-value" id="doneCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label"><span class="status-dot unavailable" aria-hidden="true"></span>Indisponíveis</span>
+          <strong class="stat-value" id="unavailableCount">0</strong>
         </div>
       </div>
 
-      <div class="list-header">
-        <span>Perfil</span>
-        <span>Estado guardado no browser</span>
+      <div class="workbench reveal">
+        <div class="toolbar" id="toolbar">
+          <label class="field" for="search">
+            <span class="field-label">Pesquisar</span>
+            <span class="input-shell">
+              <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                <circle cx="9" cy="9" r="5.7"></circle>
+                <path d="m13.2 13.2 3.4 3.4"></path>
+              </svg>
+              <input id="search" type="search" placeholder="username" autocomplete="off" disabled>
+            </span>
+          </label>
+
+          <label class="field" for="sort">
+            <span class="field-label">Ordenar</span>
+            <select id="sort" disabled>
+              <option value="username">A–Z</option>
+              <option value="recent">Mais recentes</option>
+              <option value="oldest">Mais antigos</option>
+            </select>
+          </label>
+
+          <div class="filter-bar">
+            <div class="view-tabs" role="tablist" aria-label="Filtro de estado">
+              <button class="view-tab active" type="button" role="tab" aria-selected="true" data-filter="pending" disabled>
+                <span>Pendentes</span>
+                <strong id="filterPendingCount">0</strong>
+              </button>
+              <button class="view-tab" type="button" role="tab" aria-selected="false" data-filter="all" disabled>
+                <span>Todos</span>
+                <strong id="filterAllCount">0</strong>
+              </button>
+              <button class="view-tab" type="button" role="tab" aria-selected="false" data-filter="done" disabled>
+                <span>Retirados</span>
+                <strong id="filterDoneCount">0</strong>
+              </button>
+              <button class="view-tab" type="button" role="tab" aria-selected="false" data-filter="unavailable" disabled>
+                <span>Indisponíveis</span>
+                <strong id="filterUnavailableCount">0</strong>
+              </button>
+            </div>
+            <div class="toolbar-side">
+              <div class="visible-count" aria-live="polite"><span id="visibleCount">0</span>&nbsp;visíveis</div>
+              <button class="button ghost small" id="exportCsv" type="button" disabled>
+                <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M10 3.5v8.7"></path>
+                  <path d="m6 8.4 4 3.8 4-3.8"></path>
+                  <path d="M4 14.5v2h12v-2"></path>
+                </svg>
+                <span>CSV</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ol class="user-list" id="userList"></ol>
+
+        <div class="empty" id="emptyState">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="3.5" y="5" width="17" height="14" rx="3"></rect>
+            <path d="M3.5 9.5h17"></path>
+            <path d="M7.5 13.5h5"></path>
+          </svg>
+          <p id="emptyText">Carrega o export para veres resultados — ou espreita a demonstração.</p>
+        </div>
+        <p class="footnote" id="footnote">Tudo é processado localmente. O browser guarda apenas os estados que marcares.</p>
+      </div>
+    </section>
+
+    <!-- ========================== COMO FUNCIONA ========================== -->
+    <section class="how shell" id="como-funciona" aria-label="Como funciona">
+      <div class="section-head reveal">
+        <p class="eyebrow">Como funciona</p>
+        <h2>Três passos. Zero servidores.</h2>
+        <p class="section-lede">O Instagram deixa-te exportar os teus dados. O InstaFollow compara-os localmente e mostra-te o que interessa.</p>
       </div>
 
-      <ol class="user-list" id="userList"></ol>
+      <div class="steps reveal">
+        <article class="step-card">
+          <span class="step-number" aria-hidden="true">1</span>
+          <h3>Exporta os teus dados</h3>
+          <p>No Instagram, pede o export de <strong>Followers and Following</strong> em formato JSON. Recebes um ficheiro <code>.zip</code>.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number" aria-hidden="true">2</span>
+          <h3>Arrasta para o InstaFollow</h3>
+          <p>Larga o ZIP na zona de upload. A comparação entre quem segues e quem te segue acontece no teu browser, em milissegundos.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number" aria-hidden="true">3</span>
+          <h3>Resolve a lista</h3>
+          <p>Abre cada perfil, decide, e marca como <strong>retirado</strong> ou <strong>indisponível</strong>. O progresso fica guardado para a próxima visita.</p>
+        </article>
+      </div>
 
-      <p class="empty" id="emptyState">Carrega o export para ver resultados.</p>
-      <p class="footnote" id="footnote">Tudo é processado localmente. O browser guarda apenas os estados que marcares.</p>
+      <details class="export-guide reveal">
+        <summary class="guide-summary">
+          <span class="guide-summary-title">
+            <strong>Guia detalhado: obter o ZIP do Instagram</strong>
+            <span>Export recomendado: Followers and Following · All time · JSON.</span>
+          </span>
+          <span class="guide-toggle" aria-hidden="true">
+            <span class="when-closed">Ver passos</span>
+            <span class="when-open">Fechar</span>
+          </span>
+        </summary>
+
+        <div class="guide-content">
+          <div class="guide-intro">
+            <h3>Passo a passo no Instagram</h3>
+            <p>O ficheiro ideal é um ZIP em JSON com apenas seguidores e pessoas que segues. Demora poucos minutos a chegar.</p>
+            <div class="guide-badges" aria-label="Opções recomendadas">
+              <span>Followers and Following</span>
+              <span>All time</span>
+              <span>JSON</span>
+              <span>.zip</span>
+            </div>
+          </div>
+
+          <ol class="guide-steps">
+            <li><span>Abre o Instagram</span></li>
+            <li><span>Vai a <code>Settings</code></span></li>
+            <li><span>Entra em <code>Accounts Centre</code></span></li>
+            <li><span>Entra em <code>Your information and permissions</code></span></li>
+            <li><span>Escolhe <code>Export your information</code></span></li>
+            <li><span>Escolhe <code>Create export</code></span></li>
+            <li><span>Seleciona a tua conta</span></li>
+            <li><span>Seleciona <code>Export to device</code></span></li>
+            <li><span>Em <code>Customise information</code>, deixa só <code>Followers and Following</code></span></li>
+            <li><span>Em <code>Date range</code>, escolhe <code>All time</code></span></li>
+            <li><span>Escolhe o formato <code>JSON</code></span></li>
+            <li><span>Descarrega o ficheiro <code>.zip</code></span></li>
+          </ol>
+        </div>
+      </details>
+    </section>
+
+    <!-- =========================== FUNCIONALIDADES =========================== -->
+    <section class="features shell" id="funcionalidades" aria-label="Funcionalidades">
+      <div class="section-head reveal">
+        <p class="eyebrow">Funcionalidades</p>
+        <h2>Pequeno por fora, completo por dentro</h2>
+      </div>
+
+      <div class="feature-grid reveal">
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M4.5 7.5v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-9l-4-4h-9a2 2 0 0 0-2 2Z"></path><path d="M9.5 3.5v4h6"></path></svg>
+          </span>
+          <h3>ZIP direto do Instagram</h3>
+          <p>Aceita o export completo sem descompactar. Também aceita os JSON soltos, se preferires selecioná-los à mão.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M12 3 19 5.8v5.4c0 4.6-3 7.8-7 9.3-4-1.5-7-4.7-7-9.3V5.8Z"></path><path d="m8.8 11.8 2.3 2.3 4.2-4.7"></path></svg>
+          </span>
+          <h3>Privacidade absoluta</h3>
+          <p>Nenhum byte sai do teu dispositivo. Sem analytics, sem cookies de terceiros, sem CDN — podes até usar offline.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="8.5"></circle><path d="m8.6 12.2 2.3 2.3 4.5-5"></path></svg>
+          </span>
+          <h3>Progresso persistente</h3>
+          <p>Os perfis que marcares como retirados ou indisponíveis ficam guardados em <code>localStorage</code>, prontos para a próxima sessão.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><circle cx="10.5" cy="10.5" r="6"></circle><path d="m15 15 5 5"></path></svg>
+          </span>
+          <h3>Pesquisa, filtros e ordenação</h3>
+          <p>Encontra qualquer username, filtra por estado e ordena por A–Z ou por data em que começaste a seguir.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M10 3.5v8.7"></path><path d="m6 8.4 4 3.8 4-3.8" transform="translate(2 1)"></path><path d="M12 3.5v9.7"></path><path d="m8 9.4 4 3.8 4-3.8"></path><path d="M5 17.5v2h14v-2"></path></svg>
+          </span>
+          <h3>Exportação em CSV</h3>
+          <p>Leva a lista contigo: exporta a vista atual para CSV com username, estado e data, num clique.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="m8.5 6.5-5 5.5 5 5.5"></path><path d="m15.5 6.5 5 5.5-5 5.5"></path></svg>
+          </span>
+          <h3>Código aberto e auditável</h3>
+          <p>Um único repositório, sem build nem dependências externas. Podes ler cada linha do que corre no teu browser.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============================ PRIVACIDADE ============================ -->
+    <section class="privacy" id="privacidade" aria-label="Privacidade">
+      <div class="shell privacy-inner">
+        <div class="privacy-copy reveal">
+          <p class="eyebrow">Privacidade</p>
+          <h2>Os teus dados nunca saem daqui.</h2>
+          <p class="section-lede">
+            O InstaFollow foi desenhado para que a confiança não seja necessária: não há para onde enviar os teus dados,
+            porque não existe backend. Podes desligar a internet depois de abrir a página — continua a funcionar.
+          </p>
+          <ul class="privacy-list">
+            <li><strong>Sem upload real.</strong> O “upload” é leitura local: os ficheiros ficam em memória enquanto a página está aberta.</li>
+            <li><strong>Sem login nem tokens.</strong> Nunca pedimos a tua password nem acesso à tua conta do Instagram.</li>
+            <li><strong>Sem rastreamento.</strong> Zero analytics, zero pedidos externos. A única dependência (leitor de ZIP) está incluída no site.</li>
+            <li><strong>Só guardamos as tuas marcações.</strong> Estados “retirado” e “indisponível” ficam no <code>localStorage</code> do teu browser — e podes limpá-los quando quiseres.</li>
+          </ul>
+        </div>
+        <div class="privacy-terminal reveal" aria-hidden="true">
+          <div class="terminal-bar"><span></span><span></span><span></span><em>rede — pedidos externos</em></div>
+          <div class="terminal-body">
+            <p><span class="t-prompt">▸</span> following.json <span class="t-ok">lido localmente</span></p>
+            <p><span class="t-prompt">▸</span> followers_1.json <span class="t-ok">lido localmente</span></p>
+            <p><span class="t-prompt">▸</span> comparação <span class="t-ok">executada no browser</span></p>
+            <p><span class="t-prompt">▸</span> pedidos de rede <span class="t-zero">0 enviados</span></p>
+            <p class="t-cursor">█</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ FAQ ================================ -->
+    <section class="faq shell" id="faq" aria-label="Perguntas frequentes">
+      <div class="section-head reveal">
+        <p class="eyebrow">FAQ</p>
+        <h2>Perguntas frequentes</h2>
+      </div>
+
+      <div class="faq-list reveal">
+        <details class="faq-item">
+          <summary>O InstaFollow deixa de seguir pessoas por mim?</summary>
+          <p>Não — e é essa a ideia. Automatizar ações na tua conta violaria os termos do Instagram e poria a conta em risco. O InstaFollow dá-te a lista e abre cada perfil; a decisão e o clique final são sempre teus.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Porque é que a lista pode parecer errada?</summary>
+          <p>O export do Instagram pode estar desatualizado, e contas desativadas, bloqueadas ou apagadas aparecem de formas diferentes. Entradas do tipo <code>__deleted__</code> são removidas automaticamente. Se algo não bater certo, pede um export novo.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Que ficheiros preciso exatamente?</summary>
+          <p>Só dois: <code>following.json</code> e <code>followers_*.json</code>, que vêm dentro de <code>connections/followers_and_following/</code> no ZIP. Podes arrastar o ZIP inteiro — o resto é ignorado sem ser lido.</p>
+        </details>
+        <details class="faq-item">
+          <summary>As minhas marcações desaparecem?</summary>
+          <p>Ficam guardadas no <code>localStorage</code> do browser, por username. Se limpares os dados do browser ou usares outro dispositivo, as marcações não vêm atrás — o resto volta a funcionar carregando o export outra vez.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Funciona no telemóvel?</summary>
+          <p>Sim. O site é responsivo e funciona no Safari e Chrome móveis — podes escolher o ZIP diretamente da app Ficheiros ou dos downloads.</p>
+        </details>
+        <details class="faq-item">
+          <summary>E se eu preferir o terminal?</summary>
+          <p>O repositório inclui <code>naoseguidores.py</code>, uma ferramenta opcional em Python que faz a mesma comparação e gera um HTML. A app principal continua a ser esta página.</p>
+        </details>
+      </div>
     </section>
   </main>
 
-  <script src="vendor/fflate.min.js"></script>
-  <script>
-    const DELETED_USERNAME_PREFIX = "__deleted__";
-    const IG_IGNORED_PATHS = new Set(["accounts", "explore", "p", "reel", "stories", "_u"]);
-    const storageKey = "naoMeSeguemEstados:v2";
-
-    const fileInput = document.getElementById("fileInput");
-    const uploadButton = document.getElementById("uploadButton");
-    const dropZone = document.getElementById("dropZone");
-    const uploadStatus = document.getElementById("uploadStatus");
-    const sourceStrip = document.getElementById("sourceStrip");
-    const search = document.getElementById("search");
-    const sortSelect = document.getElementById("sort");
-    const list = document.getElementById("userList");
-    const tabs = Array.from(document.querySelectorAll(".view-tab"));
-    const visibleCount = document.getElementById("visibleCount");
-    const followersCount = document.getElementById("followersCount");
-    const followingCount = document.getElementById("followingCount");
-    const resultCount = document.getElementById("resultCount");
-    const pendingCount = document.getElementById("pendingCount");
-    const doneCount = document.getElementById("doneCount");
-    const unavailableCount = document.getElementById("unavailableCount");
-    const filterPendingCount = document.getElementById("filterPendingCount");
-    const filterAllCount = document.getElementById("filterAllCount");
-    const filterDoneCount = document.getElementById("filterDoneCount");
-    const filterUnavailableCount = document.getElementById("filterUnavailableCount");
-    const progressPercent = document.getElementById("progressPercent");
-    const progressText = document.getElementById("progressText");
-    const emptyState = document.getElementById("emptyState");
-    const footnote = document.getElementById("footnote");
-    const root = document.documentElement;
-
-    let activeFilter = "pending";
-    let savedState = readState();
-    let cards = [];
-    let totalResultCount = 0;
-
-    function readState() {
-      try {
-        const value = JSON.parse(localStorage.getItem(storageKey));
-        return value && typeof value === "object" ? value : {};
-      } catch {
-        return {};
-      }
-    }
-
-    function writeState(state) {
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(state));
-      } catch {
-        return;
-      }
-    }
-
-    function setUploadStatus(message, tone) {
-      uploadStatus.textContent = message;
-      uploadStatus.classList.toggle("success", tone === "success");
-      uploadStatus.classList.toggle("error", tone === "error");
-    }
-
-    function setControlsEnabled(enabled) {
-      search.disabled = !enabled;
-      sortSelect.disabled = !enabled;
-      for (const tab of tabs) {
-        tab.disabled = !enabled;
-      }
-    }
-
-    function setSourcePills(labels) {
-      sourceStrip.replaceChildren(...labels.map((label) => {
-        const pill = document.createElement("span");
-        pill.className = "source-pill";
-        pill.textContent = label;
-        return pill;
-      }));
-    }
-
-    function fileBaseName(path) {
-      return normalizePath(path).split("/").pop() || "";
-    }
-
-    function normalizePath(path) {
-      return String(path || "").replace(/\\/g, "/").replace(/^\/+/, "");
-    }
-
-    function isZipFile(file) {
-      const name = file.name.toLowerCase();
-      return name.endsWith(".zip") || file.type === "application/zip" || file.type === "application/x-zip-compressed";
-    }
-
-    function isJsonFile(file) {
-      return file.name.toLowerCase().endsWith(".json") || file.type === "application/json";
-    }
-
-    function isFollowersFileName(name) {
-      return /^followers_\d+\.json$/i.test(name);
-    }
-
-    function isTargetInstagramJsonPath(path) {
-      const normalized = normalizePath(path);
-      const basename = fileBaseName(normalized);
-      const isTargetName = basename.toLowerCase() === "following.json" || isFollowersFileName(basename);
-
-      if (!isTargetName) {
-        return false;
-      }
-
-      return normalized.includes("connections/followers_and_following/") ||
-        normalized.includes("followers_and_following/") ||
-        !normalized.includes("/");
-    }
-
-    async function filesFromUpload(fileList) {
-      const files = Array.from(fileList || []);
-
-      if (!files.length) {
-        throw new Error("Nenhum ficheiro selecionado.");
-      }
-
-      const zipFiles = files.filter(isZipFile);
-      if (zipFiles.length) {
-        if (files.length !== 1) {
-          throw new Error("Envia o ZIP sozinho, ou seleciona apenas ficheiros JSON.");
-        }
-
-        return filesFromZip(zipFiles[0]);
-      }
-
-      const jsonFiles = files.filter(isJsonFile);
-      if (!jsonFiles.length) {
-        throw new Error("Seleciona um ZIP do Instagram ou ficheiros JSON.");
-      }
-
-      if (jsonFiles.length !== files.length) {
-        throw new Error("Remove ficheiros que nao sejam JSON.");
-      }
-
-      return Promise.all(jsonFiles.map(async (file) => ({
-        path: file.webkitRelativePath || file.name,
-        name: file.name,
-        text: await file.text(),
-      })));
-    }
-
-    async function filesFromZip(file) {
-      if (!window.fflate || typeof window.fflate.unzipSync !== "function") {
-        throw new Error("O leitor ZIP local nao carregou. Confirma que vendor/fflate.min.js existe.");
-      }
-
-      const bytes = new Uint8Array(await file.arrayBuffer());
-      const entries = window.fflate.unzipSync(bytes, {
-        filter(entry) {
-          return isTargetInstagramJsonPath(entry.name);
-        },
-      });
-
-      const jsonFiles = Object.entries(entries).map(([path, data]) => ({
-        path,
-        name: fileBaseName(path),
-        text: window.fflate.strFromU8(data),
-      }));
-
-      if (!jsonFiles.length) {
-        throw new Error("Nao encontrei following.json nem followers_*.json dentro do ZIP.");
-      }
-
-      return jsonFiles;
-    }
-
-    function parseJsonFile(file) {
-      try {
-        return JSON.parse(file.text);
-      } catch {
-        throw new Error(fileBaseName(file.path) + " nao e JSON valido.");
-      }
-    }
-
-    function parseInstagramFiles(files) {
-      const followingFiles = files.filter((file) => fileBaseName(file.path).toLowerCase() === "following.json");
-      const followersFiles = files.filter((file) => isFollowersFileName(fileBaseName(file.path)));
-
-      if (!followingFiles.length) {
-        throw new Error("following.json nao encontrado.");
-      }
-
-      if (!followersFiles.length) {
-        throw new Error("followers_*.json nao encontrado.");
-      }
-
-      const following = loadFollowing(parseJsonFile(followingFiles[0]));
-      const followers = new Map();
-
-      for (const file of followersFiles.sort((a, b) => normalizePath(a.path).localeCompare(normalizePath(b.path)))) {
-        mergeUsers(followers, loadFollowers(parseJsonFile(file)));
-      }
-
-      const rawNotFollowingBack = Array.from(following.keys())
-        .filter((username) => !followers.has(username))
-        .sort((a, b) => a.localeCompare(b));
-      const usernames = rawNotFollowingBack.filter((username) => !isProbablyUnavailable(username));
-      const skippedUnavailableCount = rawNotFollowingBack.length - usernames.length;
-
-      return {
-        followersCount: followers.size,
-        followingCount: following.size,
-        users: usernames.map((username) => following.get(username)),
-        skippedUnavailableCount,
-        files: {
-          following: followingFiles[0],
-          followers: followersFiles,
-        },
-      };
-    }
-
-    function loadFollowers(data) {
-      const followers = new Map();
-
-      if (Array.isArray(data)) {
-        mergeUsers(followers, extractUsersFromEntries(data));
-      } else if (data && typeof data === "object") {
-        for (const value of Object.values(data)) {
-          mergeUsers(followers, extractUsersFromEntries(value));
-        }
-      }
-
-      return followers;
-    }
-
-    function loadFollowing(data) {
-      if (data && typeof data === "object" && !Array.isArray(data)) {
-        return extractUsersFromEntries(data.relationships_following);
-      }
-
-      return extractUsersFromEntries(data);
-    }
-
-    function mergeUsers(target, source) {
-      for (const [username, user] of source) {
-        target.set(username, user);
-      }
-    }
-
-    function extractUsersFromEntries(entries) {
-      const users = new Map();
-
-      if (!Array.isArray(entries)) {
-        return users;
-      }
-
-      for (const entry of entries) {
-        if (!entry || typeof entry !== "object") {
-          continue;
-        }
-
-        const title = entry.title;
-        const stringListData = entry.string_list_data;
-        if (!Array.isArray(stringListData) || !stringListData.length) {
-          continue;
-        }
-
-        for (const item of stringListData) {
-          if (!item || typeof item !== "object") {
-            continue;
-          }
-
-          const username = normalizeUsername(item.value, title, item.href);
-          if (!username) {
-            continue;
-          }
-
-          users.set(username, {
-            username,
-            href: profileUrl(username, item.href),
-            timestamp: timestampFromItem(item),
-          });
-        }
-      }
-
-      return users;
-    }
-
-    function normalizeUsername(...values) {
-      for (const value of values) {
-        if (typeof value !== "string" || !value.trim()) {
-          continue;
-        }
-
-        let raw = value.trim();
-        if (raw.includes("instagram.com")) {
-          raw = usernameFromUrl(raw) || "";
-        }
-
-        raw = raw.trim().replace(/^@+/, "").replace(/^\/+|\/+$/g, "");
-        if (!raw) {
-          continue;
-        }
-
-        raw = decodeUriComponentSafe(raw).split("?")[0].split("#")[0].replace(/^\/+|\/+$/g, "").toLowerCase();
-
-        if (!raw || IG_IGNORED_PATHS.has(raw)) {
-          continue;
-        }
-
-        return raw;
-      }
-
-      return null;
-    }
-
-    function usernameFromUrl(url) {
-      try {
-        const parsed = new URL(url.trim());
-        if (!parsed.hostname.endsWith("instagram.com")) {
-          return null;
-        }
-
-        const parts = parsed.pathname
-          .split("/")
-          .map((part) => decodeUriComponentSafe(part))
-          .filter(Boolean);
-
-        if (!parts.length) {
-          return null;
-        }
-
-        if (parts[0] === "_u" && parts.length > 1) {
-          return parts[1];
-        }
-
-        return parts[0];
-      } catch {
-        return null;
-      }
-    }
-
-    function profileUrl(username, href) {
-      if (typeof href === "string" && href.includes("instagram.com")) {
-        const usernameFromHref = normalizeUsername(href);
-        if (usernameFromHref === username) {
-          return "https://www.instagram.com/" + encodeURIComponent(username) + "/";
-        }
-      }
-
-      return "https://www.instagram.com/" + encodeURIComponent(username) + "/";
-    }
-
-    function timestampFromItem(item) {
-      return Number.isInteger(item.timestamp) ? item.timestamp : null;
-    }
-
-    function decodeUriComponentSafe(value) {
-      try {
-        return decodeURIComponent(value);
-      } catch {
-        return value;
-      }
-    }
-
-    function isProbablyUnavailable(username) {
-      return username.startsWith(DELETED_USERNAME_PREFIX);
-    }
-
-    function avatarLabel(username) {
-      for (const char of username) {
-        if (/^[a-z0-9]$/i.test(char)) {
-          return char.toUpperCase();
-        }
-      }
-
-      return "#";
-    }
-
-    function avatarHue(username) {
-      let total = 0;
-      for (let index = 0; index < username.length; index += 1) {
-        total += (index + 1) * username.charCodeAt(index);
-      }
-      return total % 360;
-    }
-
-    function formatDate(timestamp) {
-      if (timestamp === null || timestamp === undefined) {
-        return "Data desconhecida";
-      }
-
-      const date = new Date(timestamp * 1000);
-      if (Number.isNaN(date.getTime())) {
-        return "Data desconhecida";
-      }
-
-      return date.toLocaleDateString("pt-PT", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-    }
-
-    function escapeHtml(value) {
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    function renderResults(dataset) {
-      totalResultCount = dataset.users.length;
-      followersCount.textContent = dataset.followersCount;
-      followingCount.textContent = dataset.followingCount;
-      resultCount.textContent = totalResultCount;
-      search.value = "";
-      sortSelect.value = "username";
-      activeFilter = "pending";
-      resetTabs();
-
-      list.replaceChildren();
-      const fragment = document.createDocumentFragment();
-      dataset.users.forEach((user, index) => {
-        fragment.appendChild(createUserCard(user, index + 1));
-      });
-      list.appendChild(fragment);
-      cards = Array.from(list.querySelectorAll(".user-card"));
-
-      setControlsEnabled(cards.length > 0);
-      hydrateState();
-      sortUsers();
-      filterUsers();
-
-      const followerLabel = dataset.files.followers.length === 1
-        ? "1 followers_*.json"
-        : dataset.files.followers.length + " followers_*.json";
-      setSourcePills([
-        fileBaseName(dataset.files.following.path),
-        followerLabel,
-        dataset.skippedUnavailableCount + " apagadas removidas",
-      ]);
-      footnote.textContent = "Contas apagadas removidas automaticamente: " + dataset.skippedUnavailableCount + ".";
-    }
-
-    function createUserCard(user, index) {
-      const li = document.createElement("li");
-      const username = user.username;
-      const timestamp = user.timestamp || 0;
-      const href = user.href;
-      li.className = "user-card";
-      li.dataset.username = username;
-      li.dataset.timestamp = String(timestamp);
-      li.style.setProperty("--avatar-hue", avatarHue(username));
-
-      li.innerHTML = `
-        <label class="done-check">
-          <input class="done-checkbox" type="checkbox" data-action="done" aria-label="Marcar @${escapeHtml(username)} como retirado">
-          <span class="checkmark" aria-hidden="true">
-            <svg viewBox="0 0 18 18" focusable="false">
-              <path d="M4.2 9.3 7.5 12.6 13.9 5.5"></path>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#topo" aria-label="InstaFollow, voltar ao topo">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <rect x="3.5" y="3.5" width="17" height="17" rx="5.2"></rect>
+              <circle cx="12" cy="12" r="4.1"></circle>
+              <path d="M17.4 6.6h.01"></path>
             </svg>
           </span>
-        </label>
+          <span class="brand-name">InstaFollow</span>
+        </a>
+        <p>Auditoria de seguidores do Instagram, 100% local. Não afiliado ao Instagram ou à Meta.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Ligações do rodapé">
+        <a href="#analisar">Analisar</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#privacidade">Privacidade</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/Fialho14/InstaFollow" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://buymeacoffee.com/fialho14" target="_blank" rel="noreferrer">Apoiar o projeto</a>
+      </nav>
+      <p class="footer-legal">© <span id="year">2026</span> Fialho14 · Feito com ficheiros locais e zero servidores.</p>
+    </div>
+  </footer>
 
-        <div class="avatar" aria-hidden="true">${escapeHtml(avatarLabel(username))}</div>
-
-        <div class="user-main">
-          <div class="username-row">
-            <a href="${escapeHtml(href)}" target="_blank" rel="noreferrer">@${escapeHtml(username)}</a>
-            <span class="status-pill">Pendente</span>
-          </div>
-          <div class="meta-row">
-            <span>Seguido desde ${escapeHtml(formatDate(user.timestamp))}</span>
-            <span class="meta-dot" aria-hidden="true"></span>
-            <span>#${index}</span>
-          </div>
-        </div>
-
-        <div class="actions">
-          <a class="icon-button primary" href="${escapeHtml(href)}" target="_blank" rel="noreferrer" aria-label="Abrir @${escapeHtml(username)} no Instagram">
-            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-              <path d="M7.5 4.8h7.7v7.7"></path>
-              <path d="M15 5 6.2 13.8"></path>
-              <path d="M13.9 15.3H4.7V6.1"></path>
-            </svg>
-            <span>Abrir</span>
-          </a>
-          <button class="icon-button ghost unavailable-button" type="button" data-action="unavailable" aria-pressed="false">
-            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-              <path d="M10 6.2v4.4"></path>
-              <path d="M10 13.8h.01"></path>
-              <path d="M10 2.9 18 17H2Z"></path>
-            </svg>
-            <span>Erro</span>
-          </button>
-        </div>
-      `;
-
-      return li;
-    }
-
-    function resetTabs() {
-      for (const tab of tabs) {
-        const isActive = tab.dataset.filter === activeFilter;
-        tab.classList.toggle("active", isActive);
-        tab.setAttribute("aria-selected", String(isActive));
-      }
-    }
-
-    function stateFor(card) {
-      return savedState[card.dataset.username] || "pending";
-    }
-
-    function setCardState(card, nextState) {
-      const username = card.dataset.username;
-
-      if (nextState === "pending") {
-        delete savedState[username];
-      } else {
-        savedState[username] = nextState;
-      }
-
-      writeState(savedState);
-      applyCardState(card, nextState);
-      filterUsers();
-    }
-
-    function applyCardState(card, cardState) {
-      card.classList.toggle("done", cardState === "done");
-      card.classList.toggle("unavailable", cardState === "unavailable");
-
-      const doneCheckbox = card.querySelector('[data-action="done"]');
-      const unavailableButton = card.querySelector('[data-action="unavailable"]');
-      const statusPill = card.querySelector(".status-pill");
-
-      doneCheckbox.checked = cardState === "done";
-      unavailableButton.querySelector("span").textContent = cardState === "unavailable" ? "Pendente" : "Erro";
-      unavailableButton.setAttribute("aria-pressed", String(cardState === "unavailable"));
-
-      if (cardState === "done") {
-        statusPill.textContent = "Retirado";
-      } else if (cardState === "unavailable") {
-        statusPill.textContent = "Indisponivel";
-      } else {
-        statusPill.textContent = "Pendente";
-      }
-    }
-
-    function hydrateState() {
-      for (const card of cards) {
-        applyCardState(card, stateFor(card));
-      }
-    }
-
-    function counts() {
-      let pending = 0;
-      let done = 0;
-      let unavailable = 0;
-
-      for (const card of cards) {
-        const cardState = stateFor(card);
-        if (cardState === "done") {
-          done += 1;
-        } else if (cardState === "unavailable") {
-          unavailable += 1;
-        } else {
-          pending += 1;
-        }
-      }
-
-      return { pending, done, unavailable };
-    }
-
-    function updateSummary() {
-      const current = counts();
-      const finished = current.done + current.unavailable;
-      const progress = totalResultCount === 0 ? 0 : Math.round((finished / totalResultCount) * 100);
-
-      pendingCount.textContent = current.pending;
-      doneCount.textContent = current.done;
-      unavailableCount.textContent = current.unavailable;
-      filterPendingCount.textContent = current.pending;
-      filterAllCount.textContent = totalResultCount;
-      filterDoneCount.textContent = current.done;
-      filterUnavailableCount.textContent = current.unavailable;
-      progressPercent.textContent = progress + "%";
-
-      if (cards.length === 0 && totalResultCount === 0) {
-        progressText.textContent = "Aguardando export local.";
-      } else if (current.pending === 0) {
-        progressText.textContent = "Nao ha perfis pendentes.";
-      } else if (current.pending === 1) {
-        progressText.textContent = "Ainda tens 1 perfil pendente.";
-      } else {
-        progressText.textContent = "Ainda tens " + current.pending + " perfis pendentes.";
-      }
-
-      root.style.setProperty("--progress", progress + "%");
-    }
-
-    function sortUsers() {
-      const mode = sortSelect.value;
-      const ordered = cards.slice().sort((a, b) => {
-        if (mode === "recent") {
-          return Number(b.dataset.timestamp) - Number(a.dataset.timestamp);
-        }
-
-        if (mode === "oldest") {
-          return Number(a.dataset.timestamp) - Number(b.dataset.timestamp);
-        }
-
-        return a.dataset.username.localeCompare(b.dataset.username);
-      });
-
-      for (const card of ordered) {
-        list.appendChild(card);
-      }
-    }
-
-    function filterUsers() {
-      const query = search.value.trim().toLowerCase();
-      let visible = 0;
-
-      for (const card of cards) {
-        const username = card.dataset.username || "";
-        const cardState = stateFor(card);
-        const matchesQuery = username.includes(query);
-        const matchesFilter =
-          activeFilter === "all" ||
-          (activeFilter === "pending" && cardState === "pending") ||
-          (activeFilter === "done" && cardState === "done") ||
-          (activeFilter === "unavailable" && cardState === "unavailable");
-        const isVisible = matchesQuery && matchesFilter;
-
-        card.hidden = !isVisible;
-        if (isVisible) {
-          visible += 1;
-        }
-      }
-
-      visibleCount.textContent = visible;
-      if (cards.length === 0) {
-        emptyState.textContent = totalResultCount === 0 ? "Carrega o export para ver resultados." : "A lista esta vazia.";
-      } else {
-        emptyState.textContent = "Nao ha resultados para essa pesquisa ou filtro.";
-      }
-      emptyState.style.display = visible === 0 ? "block" : "none";
-      updateSummary();
-    }
-
-    async function handleUpload(fileList) {
-      setUploadStatus("A processar ficheiros localmente...", "");
-      uploadButton.disabled = true;
-
-      try {
-        const files = await filesFromUpload(fileList);
-        const dataset = parseInstagramFiles(files);
-        renderResults(dataset);
-        setUploadStatus("Resultado pronto: " + dataset.users.length + " perfis encontrados.", "success");
-      } catch (error) {
-        setUploadStatus(error.message || "Nao foi possivel processar os ficheiros.", "error");
-      } finally {
-        uploadButton.disabled = false;
-        fileInput.value = "";
-      }
-    }
-
-    uploadButton.addEventListener("click", () => fileInput.click());
-    fileInput.addEventListener("change", () => handleUpload(fileInput.files));
-
-    for (const eventName of ["dragenter", "dragover"]) {
-      dropZone.addEventListener(eventName, (event) => {
-        event.preventDefault();
-        dropZone.classList.add("dragging");
-      });
-    }
-
-    for (const eventName of ["dragleave", "drop"]) {
-      dropZone.addEventListener(eventName, (event) => {
-        event.preventDefault();
-        dropZone.classList.remove("dragging");
-      });
-    }
-
-    dropZone.addEventListener("drop", (event) => {
-      handleUpload(event.dataTransfer.files);
-    });
-
-    list.addEventListener("click", (event) => {
-      const unavailableButton = event.target.closest("button[data-action='unavailable']");
-      if (!unavailableButton) {
-        return;
-      }
-
-      const card = unavailableButton.closest(".user-card");
-      const nextState = stateFor(card) === "unavailable" ? "pending" : "unavailable";
-      setCardState(card, nextState);
-    });
-
-    list.addEventListener("change", (event) => {
-      if (!event.target.matches("[data-action='done']")) {
-        return;
-      }
-
-      const card = event.target.closest(".user-card");
-      setCardState(card, event.target.checked ? "done" : "pending");
-    });
-
-    for (const tab of tabs) {
-      tab.addEventListener("click", () => {
-        activeFilter = tab.dataset.filter;
-        resetTabs();
-        filterUsers();
-      });
-    }
-
-    search.addEventListener("input", filterUsers);
-    sortSelect.addEventListener("change", () => {
-      sortUsers();
-      filterUsers();
-    });
-
-    updateSummary();
-  </script>
+  <script src="vendor/fflate.min.js"></script>
+  <script src="assets/js/app.js" defer></script>
 </body>
 </html>
