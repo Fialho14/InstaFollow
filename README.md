@@ -1,24 +1,39 @@
 # InstaFollow
 
-InstaFollow e um site para descobrir quem tu segues no Instagram e nao te segue de volta. Abres o site, arrastas o `.zip` exportado pelo Instagram e recebes a lista no momento.
+InstaFollow é um site para descobrir quem tu segues no Instagram e não te segue de volta. Abres o site, arrastas o `.zip` exportado pelo Instagram e recebes a lista no momento.
 
 Site: [https://fialho14.github.io/InstaFollow/](https://fialho14.github.io/InstaFollow/)
 
 ![InstaFollow screenshot](image/README/image.png)
 
-Tudo corre no teu browser. Nao ha login, token, API, backend, extensoes nem envio dos teus ficheiros para servidores.
+Tudo corre no teu browser. Não há login, token, API, backend, extensões nem envio dos teus ficheiros para servidores.
 
 ## Funcionalidades
 
 - Aceita o `.zip` completo do export do Instagram.
-- Aceita tambem JSON solto, desde que seleciones `following.json` e `followers_*.json` juntos.
+- Aceita também JSON solto, desde que seleciones `following.json` e `followers_*.json` juntos.
 - Compara `following.json` com `followers_*.json`.
 - Remove automaticamente entradas apagadas como `__deleted__...`.
 - Permite pesquisar usernames.
-- Permite filtrar por pendentes, todos, retirados e indisponiveis.
+- Permite filtrar por pendentes, todos, retirados e indisponíveis.
 - Permite ordenar por A-Z, mais recentes ou mais antigos.
-- Guarda no browser apenas os estados que marcares como retirado ou indisponivel.
-- Tambem funciona offline se abrires os ficheiros locais do projeto.
+- Exporta a vista atual para CSV (username, estado, data, link do perfil).
+- Modo de demonstração com dados fictícios, para veres a app sem export.
+- Tema claro e escuro, com preferência guardada no browser.
+- Guarda no browser apenas os estados que marcares como retirado ou indisponível.
+- Também funciona offline se abrires os ficheiros locais do projeto.
+
+## Estrutura do projeto
+
+```text
+index.html            # página principal (estrutura e conteúdo)
+assets/css/main.css   # design system e estilos
+assets/js/app.js      # toda a lógica da aplicação
+vendor/fflate.min.js  # leitor de ZIP vendorizado (sem CDN)
+naoseguidores.py      # ferramenta opcional de terminal
+```
+
+Não há build nem dependências externas: basta servir (ou abrir) os ficheiros tal como estão.
 
 ## Requisitos
 
