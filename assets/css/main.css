@@ -1276,6 +1276,106 @@ select:focus {
 
 /* --------------------------- Como funciona --------------------------- */
 
+.video-guide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 360px);
+  gap: clamp(24px, 5vw, 64px);
+  align-items: center;
+  margin-bottom: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 4vw, 42px);
+  background:
+    radial-gradient(circle at 10% 0%, var(--accent-soft), transparent 44%),
+    var(--surface);
+  box-shadow: var(--inset-light), var(--shadow-md);
+}
+
+.video-guide-copy {
+  display: grid;
+  gap: 16px;
+  align-content: center;
+}
+
+.video-guide-copy h3 {
+  font-size: clamp(1.45rem, 3vw, 2.15rem);
+  line-height: 1.12;
+}
+
+.video-guide-copy > p {
+  max-width: 570px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.video-kicker {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.play-dot {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  box-shadow: 0 7px 18px rgba(200, 60, 140, 0.28);
+}
+
+.play-dot::before {
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid #fff;
+  content: "";
+}
+
+.video-guide .guide-badges span {
+  border-color: var(--accent-ring);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.video-guide-copy .video-note {
+  border-left: 3px solid var(--accent);
+  padding-left: 13px;
+  font-size: 0.9rem;
+}
+
+.video-frame {
+  width: min(100%, 320px);
+  justify-self: center;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 22px;
+  padding: 7px;
+  background: #09090c;
+  box-shadow: 0 24px 54px rgba(20, 20, 40, 0.24);
+}
+
+.video-frame video {
+  width: 100%;
+  max-height: min(72vh, 620px);
+  display: block;
+  border-radius: 16px;
+  background: #000;
+  aspect-ratio: 499 / 1080;
+  object-fit: contain;
+}
+
 .steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1863,6 +1963,15 @@ html.js .reveal.visible {
 
   .hero-cta .button {
     flex: 1 1 auto;
+  }
+
+  .video-guide {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .video-frame {
+    width: min(100%, 300px);
   }
 
   .guide-content {
