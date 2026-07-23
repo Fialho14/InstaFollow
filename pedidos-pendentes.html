@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt" data-theme="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pedidos enviados — InstaFollow</title>
+  <meta name="description" content="Vê os pedidos de seguimento que ainda estão pendentes no teu export do Instagram. Tudo é processado localmente no browser.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f7f7fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0b10" media="(prefers-color-scheme: dark)">
+  <link rel="canonical" href="https://fialho14.github.io/InstaFollow/pedidos-pendentes.html">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body class="utility-body">
+  <a class="skip-link" href="#analisar-pedidos">Saltar para a análise</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="shell header-inner">
+      <a class="brand" href="index.html" aria-label="InstaFollow, voltar à página principal">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="5.2"></rect>
+            <circle cx="12" cy="12" r="4.1"></circle>
+            <path d="M17.4 6.6h.01"></path>
+          </svg>
+        </span>
+        <span class="brand-name">InstaFollow</span>
+      </a>
+
+      <div class="header-actions">
+        <a class="button ghost small" href="index.html">← Voltar</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Alternar tema claro e escuro">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7"></path>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4Z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="utility-main">
+    <section class="shell utility-shell" id="analisar-pedidos" aria-labelledby="pendingTitle">
+      <div class="utility-intro">
+        <p class="eyebrow">Ferramenta extra</p>
+        <h1 id="pendingTitle">Pedidos de seguimento enviados</h1>
+        <p class="section-lede">Vê quem ainda não aceitou o teu pedido. Carrega o mesmo ZIP do Instagram — nada sai do teu dispositivo.</p>
+      </div>
+
+      <div class="pending-upload-card">
+        <div class="pending-drop-zone" id="pendingDropZone">
+          <input class="file-input" id="pendingFileInput" type="file" accept=".zip,.json,application/json,application/zip,application/x-zip-compressed">
+          <div>
+            <p class="upload-title">Carrega o ZIP do Instagram</p>
+            <p class="upload-note">Também podes escolher apenas <code>pending_follow_requests.json</code>.</p>
+          </div>
+          <button class="button primary" id="pendingUploadButton" type="button">Escolher ficheiro</button>
+        </div>
+        <p class="upload-status" id="pendingUploadStatus" aria-live="polite">Nenhum ficheiro carregado.</p>
+      </div>
+
+      <section class="pending-results" id="pendingResults" aria-labelledby="pendingResultsTitle" hidden>
+        <div class="pending-results-head">
+          <div>
+            <p class="eyebrow">Resultado</p>
+            <h2 id="pendingResultsTitle"><span id="pendingTotal">0</span> pedidos pendentes</h2>
+          </div>
+          <div class="pending-controls">
+            <label class="field" for="pendingSearch">
+              <span class="field-label">Pesquisar</span>
+              <span class="input-shell">
+                <input id="pendingSearch" type="search" placeholder="username ou nome" autocomplete="off">
+              </span>
+            </label>
+            <label class="field" for="pendingSort">
+              <span class="field-label">Ordenar</span>
+              <select id="pendingSort">
+                <option value="recent">Mais recentes</option>
+                <option value="oldest">Mais antigos</option>
+                <option value="username">A–Z</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <p class="pending-visible"><span id="pendingVisible">0</span> visíveis</p>
+        <ol class="pending-request-list" id="pendingRequestList"></ol>
+        <div class="empty pending-empty" id="pendingEmpty" hidden>
+          <p>Não há resultados para essa pesquisa.</p>
+        </div>
+        <p class="footnote">A lista existe apenas em memória enquanto esta página estiver aberta.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer utility-footer">
+    <div class="shell footer-inner">
+      <p class="footer-legal">© <span id="year">2026</span> Fialho14 · Processamento local, sem servidores.</p>
+    </div>
+  </footer>
+
+  <script src="vendor/fflate.min.js"></script>
+  <script src="assets/js/pending-requests.js" defer></script>
+</body>
+</html>

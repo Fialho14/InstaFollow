@@ -13,6 +13,7 @@ Tudo corre no teu browser. Não há login, token, API, backend, extensões nem e
 - Aceita o `.zip` completo do export do Instagram.
 - Aceita também JSON solto, desde que seleciones `following.json` e `followers_*.json` juntos.
 - Compara `following.json` com `followers_*.json`.
+- Inclui uma página discreta para consultar os pedidos de seguimento enviados através de `pending_follow_requests.json`.
 - Remove automaticamente entradas apagadas como `__deleted__...`.
 - Permite pesquisar usernames.
 - Permite filtrar por pendentes, todos, retirados e indisponíveis.
@@ -29,6 +30,8 @@ Tudo corre no teu browser. Não há login, token, API, backend, extensões nem e
 index.html            # página principal (estrutura e conteúdo)
 assets/css/main.css   # design system e estilos
 assets/js/app.js      # toda a lógica da aplicação
+assets/js/pending-requests.js # pedidos de seguimento enviados
+pedidos-pendentes.html # página secundária dos pedidos enviados
 vendor/fflate.min.js  # leitor de ZIP vendorizado (sem CDN)
 naoseguidores.py      # ferramenta opcional de terminal
 ```
@@ -69,9 +72,10 @@ Essa pasta costuma incluir:
 followers_1.json
 following.json
 following_hashtags.json
+pending_follow_requests.json
 ```
 
-A app usa apenas `following.json` e `followers_*.json`.
+A página principal usa `following.json` e `followers_*.json`. A página secundária de pedidos enviados usa `pending_follow_requests.json`.
 
 ## Como usar
 
