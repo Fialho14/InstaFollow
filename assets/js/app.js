@@ -52,6 +52,7 @@
   const siteHeader = el("siteHeader");
   const yearEl = el("year");
   const root = document.documentElement;
+  const guideVideo = document.querySelector(".video-frame video");
 
   /* ------------------------------ Estado ------------------------------ */
 
@@ -125,6 +126,14 @@
 
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear());
+  }
+
+  /* O ecrã de espera do browser fica preto; depois do primeiro play, o
+     enquadramento passa a branco para acompanhar o tutorial. */
+  if (guideVideo) {
+    guideVideo.addEventListener("play", () => {
+      guideVideo.closest(".video-frame")?.classList.add("video-started");
+    }, { once: true });
   }
 
   /* --------------------------- Reveal on scroll --------------------------- */

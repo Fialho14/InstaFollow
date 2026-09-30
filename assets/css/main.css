@@ -1379,6 +1379,12 @@ select:focus {
   object-fit: contain;
 }
 
+/* Mantém o ecrã inicial escuro, mas integra melhor o vídeo claro após iniciar. */
+.video-frame.video-started,
+.video-frame.video-started video {
+  background: #fff;
+}
+
 .steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
