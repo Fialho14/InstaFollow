@@ -416,15 +416,49 @@ code {
 .source-pill { background: var(--apple-fill); color: var(--apple-secondary); font-weight: 550; }
 
 .progress-panel {
-  grid-template-columns: 64px 1fr;
-  gap: 14px;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 18px;
   margin-inline: 6px;
   border-color: var(--apple-separator);
 }
 
-.progress-ring { width: 64px; background: radial-gradient(circle at center, var(--glass-strong) 0 57%, transparent 59%), conic-gradient(var(--apple-blue) var(--progress), var(--apple-fill) 0); }
-.progress-ring strong { font-size: 1.08rem; }
-.progress-ring span { font-size: 0.52rem; }
+.progress-ring {
+  position: relative;
+  width: 88px;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Cut out the centre rather than cover it with translucent glass:
+   the progress colour stays in the ring and never bleeds behind the text. */
+.progress-ring::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(var(--apple-blue) var(--progress), var(--apple-fill) 0);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+  mask: radial-gradient(closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+  content: "";
+  pointer-events: none;
+}
+
+.progress-ring > div { position: relative; text-align: center; }
+.progress-ring strong {
+  color: var(--apple-label);
+  font-size: 1.5rem;
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+.progress-ring span {
+  margin-top: 4px;
+  color: var(--apple-secondary);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
 .progress-text { color: var(--apple-secondary); font-size: 0.88rem; }
 
 /* Results become one quiet application surface. */
