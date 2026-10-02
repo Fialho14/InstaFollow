@@ -1,2 +1,30 @@
+# macOS
 .DS_Store
+**/.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Instagram export data & local outputs
+nao_me_seguem_gerado.html
+*.zip
+followers_*.json
+following.json
+following_hashtags.json
 pending_follow_requests.json
+connections/
+followers_and_following/
+Instagram_data_*/
+
+# IDE & editors
+.vscode/
+.idea/
+*.swp
+*.swo

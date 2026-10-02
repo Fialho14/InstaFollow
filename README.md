@@ -2,7 +2,7 @@
 
 InstaFollow é um site para descobrir quem tu segues no Instagram e não te segue de volta. Abres o site, arrastas o `.zip` exportado pelo Instagram e recebes a lista no momento.
 
-Site: [https://fialho14.github.io/InstaFollow/](https://fialho14.github.io/InstaFollow/)
+Site: [https://instafollow-pt.vercel.app](https://instafollow-pt.vercel.app)
 
 ![InstaFollow screenshot](image/README/image.png)
 
@@ -82,7 +82,7 @@ A página principal usa `following.json` e `followers_*.json`. A página secund�
 Abre o site:
 
 ```text
-https://fialho14.github.io/InstaFollow/
+https://instafollow-pt.vercel.app
 ```
 
 Depois arrasta o ficheiro `.zip` para o local indicado no site.
